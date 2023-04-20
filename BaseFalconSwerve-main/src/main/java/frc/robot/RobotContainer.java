@@ -37,7 +37,6 @@ import frc.robot.commands.Intake.TeleopIntake;
 import frc.robot.commands.Intake.intakeStop;
 import frc.robot.commands.Wrist.TeleopWrist;
 //import frc.robot.commands.Wrist.WristSetPosition;
-import frc.robot.commands.Shoulder.ShoulderSetPosition;
 import frc.robot.commands.Shoulder.TeleopShoulder;
 
 /* Subsystems */

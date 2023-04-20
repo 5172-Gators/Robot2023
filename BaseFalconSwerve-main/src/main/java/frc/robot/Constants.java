@@ -295,7 +295,6 @@ public final class Constants {
         public static final double wristKP = .15;
         public static final double wristKI = 0.0;
         public static final double wristKD = 0.0;
-        
         public static final double wristKF = 0;
 
 
@@ -311,7 +310,7 @@ public final class Constants {
 
     public enum Position {
 
-        HIGH(21051, Elevator.maxExtension, -7328), //what do we use these
+        HIGH(21051, Elevator.maxExtension, -7328),
         CONEHIGH(-45735, 57894, -17061),
         CUBEHIGH(-20000, Elevator.maxExtension, -15000),
         MID(0, 0, 0),

@@ -20,115 +20,102 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 
 public class WristSub extends SubsystemBase {
-  /** Creates a new ElevatorTest. */
-  //private WPI_CANCoder m_CANCoder;
-  private final TalonFX wristMotor;
+    /**
+     * Creates a new ElevatorTest.
+     */
+    //private WPI_CANCoder m_CANCoder;
+    private final TalonFX wristMotor;
 
 
-  // final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
+    // final int kUnitsPerRevolution = 2048; /* this is constant for Talon FX */
 
-  private static final double k_openLoopRampRate = 0.1;
-  private static final int k_currentLimit = Constants.Wrist.currentLimit; // Current limit for intake falcon 500
+    private static final double k_openLoopRampRate = 0.1;
+    private static final int k_currentLimit = Constants.Wrist.currentLimit; // Current limit for intake falcon 500
 
-  private double m_encoder = 0;
-  private double m_goalPosition;
+    private double m_encoder = 0;
+    private double m_goalPosition;
 
-  public WristSub() {
+    public WristSub() {
 
-    // initialize motors
-    // the right motor will spin clockwise and the left motor will go counter
-    // clockwise
-    wristMotor = new TalonFX(Constants.Wrist.wristMotorID);
-   //m_CANCoder = new WPI_CANCoder(Constants.Wrist.kWristCancoderID, "rio");
+        // initialize motors
+        // the right motor will spin clockwise and the left motor will go counter
+        // clockwise
+        wristMotor = new TalonFX(Constants.Wrist.wristMotorID);
+        //m_CANCoder = new WPI_CANCoder(Constants.Wrist.kWristCancoderID, "rio");
 
-    TalonFXConfiguration config = new TalonFXConfiguration();
-    config.voltageCompSaturation = 12.0;
-    config.openloopRamp = k_openLoopRampRate;
-    config.forwardSoftLimitEnable = true;
-    config.reverseSoftLimitEnable = true;
-    config.forwardSoftLimitThreshold = Constants.Wrist.maxAngle;
-    config.reverseSoftLimitThreshold = Constants.Wrist.minAngle;
-    config.statorCurrLimit = new StatorCurrentLimitConfiguration(true, k_currentLimit, 0, 0);
+        TalonFXConfiguration config = new TalonFXConfiguration();
+        config.voltageCompSaturation = 12.0;
+        config.openloopRamp = k_openLoopRampRate;
+//    config.forwardSoftLimitEnable = true;
+//    config.reverseSoftLimitEnable = true;
+//    config.forwardSoftLimitThreshold = Constants.Wrist.maxAngle;
+//    config.reverseSoftLimitThreshold = Constants.Wrist.minAngle;
+        config.statorCurrLimit = new StatorCurrentLimitConfiguration(true, k_currentLimit, 0, 0);
 
-    wristMotor.configAllSettings(config);
-    wristMotor.enableVoltageCompensation(true);
-    wristMotor.setNeutralMode(NeutralMode.Brake);
-    wristMotor.setInverted(TalonFXInvertType.CounterClockwise);
-    //wristMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    wristMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
-    // elevatorMotorOne.setSelectedSensorPosition(0); // zero the encoder
-    //wristMotor.configRemoteFeedbackFilter(m_CANCoder, 0);
+        wristMotor.configAllSettings(config);
+        wristMotor.enableVoltageCompensation(true);
+        wristMotor.setNeutralMode(NeutralMode.Brake);
+        wristMotor.setInverted(TalonFXInvertType.CounterClockwise);
+        wristMotor.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
+        wristMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, Constants.Wrist.kPIDLoopIdx, Constants.Wrist.kTimeoutMs);
 
-    // wristMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.RemoteSensor0,
-    //     Constants.Wrist.kPIDLoopIdx,
-    //     Constants.Wrist.kTimeoutMs);
-    wristMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
-    
-        Constants.Wrist.kPIDLoopIdx,
-        Constants.Wrist.kTimeoutMs);
+        wristMotor.setSensorPhase(Constants.Wrist.kSensorPhase);
 
-    wristMotor.setSensorPhase(Constants.Wrist.kSensorPhase);
+        wristMotor.configAllowableClosedloopError(0, Constants.Wrist.kWristDeadband, Constants.Wrist.kTimeoutMs);
+        /* Config Position Closed Loop gains in slot0, kF stays zero if using position controlmode. */
+        // elevatorMotorOne.config_kF(Constants.Elevator.kPIDLoopIdx,
+        // Constants.Elevator. kGains.kF, Constants.Elevator.kTimeoutMs);
+        wristMotor.config_kP(Constants.Wrist.kPIDLoopIdx, Constants.Wrist.wristKP, Constants.Wrist.kTimeoutMs);
+        wristMotor.config_kI(Constants.Wrist.kPIDLoopIdx, Constants.Wrist.wristKI, Constants.Wrist.kTimeoutMs);
+        wristMotor.config_kD(Constants.Wrist.kPIDLoopIdx, Constants.Wrist.wristKD, Constants.Wrist.kTimeoutMs);
+        wristMotor.config_kF(Constants.Wrist.kPIDLoopIdx, Constants.Wrist.wristKF, Constants.Wrist.kTimeoutMs);
 
-    wristMotor.configAllowableClosedloopError(0, Constants.Wrist.kWristDeadband, Constants.Wrist.kTimeoutMs);
-    /* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
-    // elevatorMotorOne.config_kF(Constants.Elevator.kPIDLoopIdx,
-    // Constants.Elevator. kGains.kF, Constants.Elevator.kTimeoutMs);
-    wristMotor.config_kP(Constants.Wrist.kPIDLoopIdx, Constants.Wrist.wristKP, Constants.Wrist.kTimeoutMs);
-    wristMotor.config_kI(Constants.Wrist.kPIDLoopIdx, Constants.Wrist.wristKI, Constants.Wrist.kTimeoutMs);
-    wristMotor.config_kD(Constants.Wrist.kPIDLoopIdx, Constants.Wrist.wristKD, Constants.Wrist.kTimeoutMs);
-    wristMotor.config_kF(Constants.Wrist.kPIDLoopIdx, Constants.Wrist.wristKF, Constants.Wrist.kTimeoutMs);
+        wristMotor.setSelectedSensorPosition(0);
+        m_encoder = wristMotor.getSelectedSensorPosition(); // * 1.0 / 360.0 * 2.0 * Math.PI * 1.5;
 
-    wristMotor.setSelectedSensorPosition(0);
-    m_encoder = wristMotor.getSelectedSensorPosition(); // * 1.0 / 360.0 * 2.0 * Math.PI * 1.5;
-
-  }
-
-
-
-
-
-  public void setPosition(double goalPosition) {
-    // if (goalPosition > Constants.Wrist.lowerLimit) {
-    //   goalPosition = Constants.Wrist.lowerLimit;
-    // } else if (goalPosition < Constants.Wrist.upperLimit) {
-    //   goalPosition = Constants.Wrist.upperLimit;
-    // }
-    m_goalPosition = goalPosition;
-  }
-
-  public void joystickPosition(double joystickPosition) {
-    m_goalPosition = m_goalPosition + joystickPosition;
-  }
-
-  public double WristPosition() {
-    return wristMotor.getSelectedSensorPosition();
-  }
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    m_encoder = wristMotor.getSelectedSensorPosition();// * (1.0 / 360.0 * 2.0 * Math.PI * 1.5);
-    if (m_goalPosition > Constants.Wrist.maxAngle) {
-      m_goalPosition = Constants.Wrist.maxAngle;
     }
-    else if (m_goalPosition< Constants.Wrist.minAngle){
-      m_goalPosition= Constants.Wrist.minAngle;
-    }
-    SmartDashboard.putNumber("Wrist Position", m_encoder);
-    SmartDashboard.putNumber("Wrist Goal Position", m_goalPosition);
-    SmartDashboard.putNumber("Wrist Motor Output", wristMotor.getMotorOutputPercent());
-    // elevatorMotorOne.set(ControlMode.Position,
-    // m_controller.calculate(m_encoder));
-    wristMotor.set(TalonFXControlMode.Position, m_goalPosition);
 
-  }
 
-  public boolean atSetpoint() {
-    if (WristPosition() < m_goalPosition + Constants.Wrist.kWristDeadband
-        || WristPosition() > m_goalPosition + Constants.Wrist.kWristDeadband) {
-      return true;
-    } else {
-      return false;
+    public void setPosition(double goalPosition) {
+        // if (goalPosition > Constants.Wrist.lowerLimit) {
+        //   goalPosition = Constants.Wrist.lowerLimit;
+        // } else if (goalPosition < Constants.Wrist.upperLimit) {
+        //   goalPosition = Constants.Wrist.upperLimit;
+        // }
+        m_goalPosition = goalPosition;
     }
-  }
+
+    public void joystickPosition(double joystickPosition) {
+        m_goalPosition = m_goalPosition + joystickPosition;
+    }
+
+    public double WristPosition() {
+        return wristMotor.getSelectedSensorPosition();
+    }
+
+    @Override
+    public void periodic() {
+        // This method will be called once per scheduler run
+        m_encoder = wristMotor.getSelectedSensorPosition();// * (1.0 / 360.0 * 2.0 * Math.PI * 1.5);
+        if (m_goalPosition > Constants.Wrist.maxAngle) {
+            m_goalPosition = Constants.Wrist.maxAngle;
+        } else if (m_goalPosition < Constants.Wrist.minAngle) {
+            m_goalPosition = Constants.Wrist.minAngle;
+        }
+        SmartDashboard.putNumber("Wrist Position", m_encoder);
+        SmartDashboard.putNumber("Wrist Goal Position", m_goalPosition);
+        SmartDashboard.putNumber("Wrist Motor Output", wristMotor.getMotorOutputPercent());
+        // elevatorMotorOne.set(ControlMode.Position,
+        // m_controller.calculate(m_encoder));
+        wristMotor.set(TalonFXControlMode.Position, m_goalPosition);
+
+    }
+
+    public boolean atSetpoint() {
+        if (WristPosition() < m_goalPosition + Constants.Wrist.kWristDeadband || WristPosition() > m_goalPosition + Constants.Wrist.kWristDeadband) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

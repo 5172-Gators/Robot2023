@@ -43,10 +43,10 @@ public class ElevatorSub extends SubsystemBase {
     elevatorMotorTwo = new TalonFX(Constants.Elevator.motorTwoId);
 
     TalonFXConfiguration config = new TalonFXConfiguration();
-    config.forwardSoftLimitEnable = true;
-    config.reverseSoftLimitEnable = true;
-    config.forwardSoftLimitThreshold = Constants.Elevator.maxExtension;
-    config.reverseSoftLimitThreshold = Constants.Elevator.maxExtension;
+//    config.forwardSoftLimitEnable = true;
+//    config.reverseSoftLimitEnable = true;
+//    config.forwardSoftLimitThreshold = Constants.Elevator.maxExtension;
+//    config.reverseSoftLimitThreshold = Constants.Elevator.maxExtension;
     config.voltageCompSaturation = 12.0;
     config.openloopRamp = k_openLoopRampRate;
     config.statorCurrLimit = new StatorCurrentLimitConfiguration(true, k_currentLimit, 0, 0);
@@ -76,10 +76,14 @@ public class ElevatorSub extends SubsystemBase {
     elevatorMotorOne.setSensorPhase(Constants.Elevator.kSensorPhase);
     elevatorMotorTwo.setSensorPhase(Constants.Elevator.kSensorPhase);
 
-    elevatorMotorOne.configAllowableClosedloopError(0, Constants.Elevator.kElevatorAllowableError,
+    elevatorMotorOne.configAllowableClosedloopError(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kElevatorAllowableError,
         Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.configAllowableClosedloopError(0, Constants.Elevator.kElevatorAllowableError,
+    elevatorMotorTwo.configAllowableClosedloopError(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kElevatorAllowableError,
         Constants.Elevator.kTimeoutMs);
+    elevatorMotorOne.configAllowableClosedloopError(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kElevatorAllowableError,
+            Constants.Elevator.kTimeoutMs);
+    elevatorMotorTwo.configAllowableClosedloopError(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kElevatorAllowableError,
+            Constants.Elevator.kTimeoutMs);
     /* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
     // elevatorMotorOne.config_kF(Constants.Elevator.kPIDLoopIdx,
     // Constants.Elevator. kGains.kF, Constants.Elevator.kTimeoutMs);

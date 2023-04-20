@@ -46,10 +46,10 @@ public class ShoulderSub extends SubsystemBase {
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.voltageCompSaturation = 12.0;
     config.openloopRamp = k_openLoopRampRate;
-    config.forwardSoftLimitEnable = true;
-    config.reverseSoftLimitEnable = true;
-    config.forwardSoftLimitThreshold = Constants.Shoulder.maxAngle;
-    config.reverseSoftLimitThreshold = Constants.Shoulder.minAngle;
+//    config.forwardSoftLimitEnable = true;
+//    config.reverseSoftLimitEnable = true;
+//    config.forwardSoftLimitThreshold = Constants.Shoulder.maxAngle;
+//    config.reverseSoftLimitThreshold = Constants.Shoulder.minAngle;
     config.statorCurrLimit = new StatorCurrentLimitConfiguration(true, k_currentLimit, 0, 0);
 
     ShoulderMotorOne.configAllSettings(config);
