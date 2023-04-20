@@ -15,9 +15,9 @@ import frc.robot.subsystems.ShoulderSub;
 import frc.robot.subsystems.WristSub;
 
 public class SetAllPositions extends CommandBase {
-  private WristSub s_Wrist;
-  private ElevatorSub s_Elevator;
-  private ShoulderSub s_Shoulder;
+  private final WristSub s_Wrist;
+  private final ElevatorSub s_Elevator;
+  private final ShoulderSub s_Shoulder;
 
   private Position k_position;
   private Timer timer;

@@ -5,7 +5,6 @@
 package frc.robot.commands.Shoulder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ElevatorSub;
 import frc.robot.subsystems.ShoulderSub;
 public class ShoulderSetPosition extends CommandBase {
   /* Creates a new shoulder */
@@ -37,7 +36,7 @@ public class ShoulderSetPosition extends CommandBase {
   @Override
   public boolean isFinished() {
     
-    if(s_Shoulder.ShoulderPosition() == 10)//< 300 + 100  && s_Shoulder.ShoulderPosition() > 300 - 100)
+    if(s_Shoulder.getShoulderPosition() == 10)//< 300 + 100  && s_Shoulder.ShoulderPosition() > 300 - 100)
     {
       return true;
     } 

@@ -6,18 +6,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
-import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -48,6 +44,10 @@ public class WristSub extends SubsystemBase {
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.voltageCompSaturation = 12.0;
     config.openloopRamp = k_openLoopRampRate;
+    config.forwardSoftLimitEnable = true;
+    config.reverseSoftLimitEnable = true;
+    config.forwardSoftLimitThreshold = Constants.Wrist.maxAngle;
+    config.reverseSoftLimitThreshold = Constants.Wrist.minAngle;
     config.statorCurrLimit = new StatorCurrentLimitConfiguration(true, k_currentLimit, 0, 0);
 
     wristMotor.configAllSettings(config);
@@ -108,11 +108,11 @@ public class WristSub extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     m_encoder = wristMotor.getSelectedSensorPosition();// * (1.0 / 360.0 * 2.0 * Math.PI * 1.5);
-    if (m_goalPosition > Constants.Wrist.maxExtension) {
-      m_goalPosition = Constants.Wrist.maxExtension;
+    if (m_goalPosition > Constants.Wrist.maxAngle) {
+      m_goalPosition = Constants.Wrist.maxAngle;
     }
-    else if (m_goalPosition< Constants.Wrist.minExtension){
-      m_goalPosition= Constants.Wrist.minExtension;
+    else if (m_goalPosition< Constants.Wrist.minAngle){
+      m_goalPosition= Constants.Wrist.minAngle;
     }
     SmartDashboard.putNumber("Wrist Position", m_encoder);
     SmartDashboard.putNumber("Wrist Goal Position", m_goalPosition);

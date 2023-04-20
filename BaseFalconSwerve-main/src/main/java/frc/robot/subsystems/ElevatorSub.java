@@ -6,12 +6,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
@@ -45,6 +43,10 @@ public class ElevatorSub extends SubsystemBase {
     elevatorMotorTwo = new TalonFX(Constants.Elevator.motorTwoId);
 
     TalonFXConfiguration config = new TalonFXConfiguration();
+    config.forwardSoftLimitEnable = true;
+    config.reverseSoftLimitEnable = true;
+    config.forwardSoftLimitThreshold = Constants.Elevator.maxExtension;
+    config.reverseSoftLimitThreshold = Constants.Elevator.maxExtension;
     config.voltageCompSaturation = 12.0;
     config.openloopRamp = k_openLoopRampRate;
     config.statorCurrLimit = new StatorCurrentLimitConfiguration(true, k_currentLimit, 0, 0);
@@ -74,9 +76,9 @@ public class ElevatorSub extends SubsystemBase {
     elevatorMotorOne.setSensorPhase(Constants.Elevator.kSensorPhase);
     elevatorMotorTwo.setSensorPhase(Constants.Elevator.kSensorPhase);
 
-    elevatorMotorOne.configAllowableClosedloopError(0, Constants.Elevator.kElevatorDeadband,
+    elevatorMotorOne.configAllowableClosedloopError(0, Constants.Elevator.kElevatorAllowableError,
         Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.configAllowableClosedloopError(0, Constants.Elevator.kElevatorDeadband,
+    elevatorMotorTwo.configAllowableClosedloopError(0, Constants.Elevator.kElevatorAllowableError,
         Constants.Elevator.kTimeoutMs);
     /* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
     // elevatorMotorOne.config_kF(Constants.Elevator.kPIDLoopIdx,
@@ -126,7 +128,7 @@ public class ElevatorSub extends SubsystemBase {
     if (m_goalPosition > Constants.Elevator.maxExtension) {
       m_goalPosition = Constants.Elevator.maxExtension;
     }
-    else if (m_goalPosition< Constants.Elevator.minExtension){
+    else if (m_goalPosition < Constants.Elevator.minExtension){
       m_goalPosition= Constants.Elevator.minExtension;
     }
     SmartDashboard.putNumber("Elevator Position", m_encoder);
