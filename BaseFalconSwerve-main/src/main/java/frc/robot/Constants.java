@@ -192,11 +192,13 @@ public final class Constants {
         public static final int currentLimit = 60;
        // public static final double maxMotorVoltage = 1;
 
-        public static final int kSlotIdx = 0;
+        public static final int kRisingSlotIdx = 0;
+        public static final int kFallingSlotIdx = 1;
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30;
 
         public static final double elevatorKP = .4;
+        public static final double fallingElevatorKP = .2;
         public static final double elevatorKI = 0.0;
         public static final double elevatorKD = .5;
         //public static final double kF = 0.02;

@@ -31,51 +31,52 @@ public class exampleAuto extends SequentialCommandGroup {
     private final ElevatorSub s_Elevator = new ElevatorSub();
     private final WristSub s_Wrist = new WristSub();
     private final ShoulderSub s_Shoulder = new ShoulderSub();
-    public exampleAuto(Swerve s_Swerve){
+
+    public exampleAuto(Swerve s_Swerve) {
         TrajectoryConfig config =
-            new TrajectoryConfig(
-                    Constants.AutoConstants.kMaxSpeedMetersPerSecond,
-                    Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-                .setKinematics(Constants.Swerve.swerveKinematics);
+                new TrajectoryConfig(
+                        Constants.AutoConstants.kMaxSpeedMetersPerSecond,
+                        Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared)
+                        .setKinematics(Constants.Swerve.swerveKinematics);
 
         // An example trajectory to follow.  All units in meters.
         Trajectory exampleTrajectory =
-            TrajectoryGenerator.generateTrajectory(
-                // Start at the origin facing the +X direction
-                new Pose2d(0, 0, new Rotation2d(0)),
-                // Pass through these two interior waypoints, making an 's' curve path
-                List.of(new Translation2d(0, 0), new Translation2d(0, 0)),
-                // End 3 meters straight ahead of where we started, facing forward
-                new Pose2d(2, 0, new Rotation2d(0)),
-                config);
+                TrajectoryGenerator.generateTrajectory(
+                        // Start at the origin facing the +X direction
+                        new Pose2d(0, 0, new Rotation2d(0)),
+                        // Pass through these two interior waypoints, making an 's' curve path
+                        List.of(new Translation2d(0, 0), new Translation2d(0, 0)),
+                        // End 3 meters straight ahead of where we started, facing forward
+                        new Pose2d(2, 0, new Rotation2d(0)),
+                        config);
 
         var thetaController =
-            new ProfiledPIDController(
-                Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
+                new ProfiledPIDController(
+                        Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
         CommandBase swerveControllerCommand = new AutoBalance(s_Swerve);
-            // new SwerveControllerCommand(
-            //     exampleTrajectory,
-            //     s_Swerve::getPose,
-            //     Constants.Swerve.swerveKinematics,
-            //     new PIDController(Constants.AutoConstants.kPXController, 0, 0),
-            //     new PIDController(Constants.AutoConstants.kPYController, 0, 0),
-            //     thetaController,
-            //     s_Swerve::setModuleStates,
-            //     s_Swerve);
+        // new SwerveControllerCommand(
+        //     exampleTrajectory,
+        //     s_Swerve::getPose,
+        //     Constants.Swerve.swerveKinematics,
+        //     new PIDController(Constants.AutoConstants.kPXController, 0, 0),
+        //     new PIDController(Constants.AutoConstants.kPYController, 0, 0),
+        //     thetaController,
+        //     s_Swerve::setModuleStates,
+        //     s_Swerve);
 
 
         addCommands(
-            // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
-            new WaitCommand(0.5),
-            // new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
-            // new WaitCommand(0.5),
-            // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.HIGH, () -> GamePiece.CUBE),
-            // new WaitCommand(0.5),
-            // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
+                // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
+                new WaitCommand(0.5),
+                // new InstantCommand(() -> s_Swerve.resetOdometry(exampleTrajectory.getInitialPose())),
+                // new WaitCommand(0.5),
+                // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.HIGH, () -> GamePiece.CUBE),
+                // new WaitCommand(0.5),
+                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE), // just added
 
-            swerveControllerCommand
+                swerveControllerCommand
         );
     }
 }

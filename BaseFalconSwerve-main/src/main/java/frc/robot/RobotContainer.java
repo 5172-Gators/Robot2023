@@ -171,10 +171,10 @@ public class RobotContainer {
 
         // intakeTrigger.onTrue(new InstantCommand(() -> s_Intake.setMotor(1))); // button 1
         // outtakeButton.onTrue(new InstantCommand(() -> s_Intake.setMotor(-1))); // button 2
-        selectConeButton.onTrue(new InstantCommand(()->
-        setGamePiece(GamePiece.CONE))); // button 3
-        selectCubeButton.onTrue(new InstantCommand(()->
-        setGamePiece(GamePiece.CUBE))); // button 4
+//        selectConeButton.onTrue(new InstantCommand(()->
+//        setGamePiece(GamePiece.CONE))); // button 3
+//        selectCubeButton.onTrue(new InstantCommand(()->
+//        setGamePiece(GamePiece.CUBE))); // button 4
 
         // Rotate Stick
 
