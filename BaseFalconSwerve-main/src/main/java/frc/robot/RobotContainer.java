@@ -4,6 +4,9 @@ import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.stream.IntStream;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -114,7 +117,7 @@ public class RobotContainer {
     private static final JoystickButton placeLowButton = new JoystickButton(operatorStick, 12);
 
     /* Subsystems */
-    private final Swerve s_Swerve = new Swerve();
+    private final Swerve s_Swerve = Swerve.getInstance();
     private final IntakeSub s_Intake = IntakeSub.getInstance();
     private final WristSub s_Wrist = WristSub.getInstance();
     private final ElevatorSub s_Elevator = ElevatorSub.getInstance();
@@ -179,7 +182,11 @@ public class RobotContainer {
 
         // selectGamepieceTrigger.onTrue(new InstantCommand(() ->
         // setGamePiece(GamePiece.CONE)));
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroGyro())); // button 2
+        zeroGyro.onTrue(new InstantCommand(() ->
+                s_Swerve.resetOdometry(
+                        DriverStation.getAlliance() == DriverStation.Alliance.Blue ? new Pose2d(): new Pose2d(0,0, Rotation2d.fromDegrees(180))
+                ))
+        ); // button 2
 
         /* Operator Buttons */
 
