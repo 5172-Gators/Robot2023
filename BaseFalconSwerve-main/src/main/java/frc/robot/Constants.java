@@ -160,7 +160,7 @@ public final class Constants {
 
     public static final class Intake {
         public static final int mainMotorId = 53;
-        public static final int followerMotorId = 23;
+        public static final int followerMotorId = 22;
 
         public static final int pdpChannel = 2; // update number later
 
@@ -193,18 +193,20 @@ public final class Constants {
         public static final int currentLimit = 60;
        // public static final double maxMotorVoltage = 1;
 
-        public static final int kSlotIdx = 0;
+        public static final int kRisingSlotIdx = 0;
+        public static final int kFallingSlotIdx = 1;
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30;
 
         public static final double elevatorKP = .4;
+        public static final double fallingElevatorKP = .2;
         public static final double elevatorKI = 0.0;
         public static final double elevatorKD = .5;
         //public static final double kF = 0.02;
         public static final double elevatorKF = 0;
 		public static final double minExtension = 0;
         
-        public static final Double maxExtension = 58000.0;
+        public static final double maxExtension = 58000.0;
 
         public static boolean kSensorPhase = true;
     	public static boolean kMotorInvert = true;
@@ -223,7 +225,7 @@ public static final double elevatorHoldOutput = 0.02;
     }
 
     public static final class Wrist {
-        public static final int wristMotorID = 22;
+        public static final int wristMotorID = 23;
         public static final int currentLimit = 30;
         public static final double maxMotorVoltage = 12;
         public static final int EncoderID = 16;
