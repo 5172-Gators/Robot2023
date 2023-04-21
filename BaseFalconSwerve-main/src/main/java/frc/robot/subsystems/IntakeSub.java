@@ -37,7 +37,19 @@ public class IntakeSub extends SubsystemBase {
     /**
      * Constructor for intake subsystem.
      */
-    public IntakeSub() {
+    
+  private static IntakeSub INSTANCE;
+    
+    public static IntakeSub getInstance(){
+        if(INSTANCE == null){
+          INSTANCE = new IntakeSub();
+        }
+        return INSTANCE;
+      }
+
+
+
+    private IntakeSub() {
         m_intakeMotor = new TalonFX(Constants.Intake.motorId);// new CANSparkMax(Constants.Intake.motorId,
                                                                       // MotorType.kBrushless);
         // Configure all settings on Talons

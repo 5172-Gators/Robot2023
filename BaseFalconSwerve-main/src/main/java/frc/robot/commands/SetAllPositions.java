@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.GamePiece;
@@ -15,9 +16,9 @@ import frc.robot.subsystems.ShoulderSub;
 import frc.robot.subsystems.WristSub;
 
 public class SetAllPositions extends CommandBase {
-  private final WristSub s_Wrist;
-  private final ElevatorSub s_Elevator;
-  private final ShoulderSub s_Shoulder;
+  private WristSub s_Wrist;
+  private ElevatorSub s_Elevator;
+  private ShoulderSub s_Shoulder;
 
   private Position k_position;
   private Timer timer;
@@ -109,7 +110,10 @@ public class SetAllPositions extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint() && s_Shoulder.atSetpoint()) || timer.get() > .75;
-    return true;
+    if(DriverStation.isAutonomousEnabled()){
+      return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint() && s_Shoulder.atSetpoint());
+    } else {
+      return true;
+    }
   }
 }

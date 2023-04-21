@@ -14,21 +14,21 @@ import frc.robot.subsystems.WristSub;
 
 public class IntakeOn extends CommandBase {
     private IntakeSub s_Intake;
+    private boolean intaking;
 
-    public IntakeOn(IntakeSub s_Intake) {
+    public IntakeOn(IntakeSub s_Intake, boolean intaking) {
         this.s_Intake = s_Intake;
-
+        this.intaking=intaking;
         addRequirements(s_Intake);
     }
 
     @Override
     public void execute() {
-        s_Intake.setMotor(0.75);
+        s_Intake.setMotor(intaking ? 0.75 : -0.75);
         
     }
 
     public void end(boolean Interrupted){
-       s_Intake.setMotor(0);
     }
 
     @Override

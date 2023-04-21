@@ -6,10 +6,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
@@ -34,7 +36,17 @@ public class ElevatorSub extends SubsystemBase {
   private double m_encoder = 0;
   private double m_goalPosition;
 
-  public ElevatorSub() {
+  private static ElevatorSub INSTANCE;
+
+  public static ElevatorSub getInstance(){
+    if(INSTANCE == null){
+      INSTANCE = new ElevatorSub();
+    }
+    return INSTANCE;
+  }
+
+
+  private ElevatorSub() {
 
     // initialize motors
     // the right motor will spin clockwise and the left motor will go counter
@@ -43,10 +55,6 @@ public class ElevatorSub extends SubsystemBase {
     elevatorMotorTwo = new TalonFX(Constants.Elevator.motorTwoId);
 
     TalonFXConfiguration config = new TalonFXConfiguration();
-//    config.forwardSoftLimitEnable = true;
-//    config.reverseSoftLimitEnable = true;
-//    config.forwardSoftLimitThreshold = Constants.Elevator.maxExtension;
-//    config.reverseSoftLimitThreshold = Constants.Elevator.maxExtension;
     config.voltageCompSaturation = 12.0;
     config.openloopRamp = k_openLoopRampRate;
     config.statorCurrLimit = new StatorCurrentLimitConfiguration(true, k_currentLimit, 0, 0);
@@ -76,58 +84,40 @@ public class ElevatorSub extends SubsystemBase {
     elevatorMotorOne.setSensorPhase(Constants.Elevator.kSensorPhase);
     elevatorMotorTwo.setSensorPhase(Constants.Elevator.kSensorPhase);
 
-    elevatorMotorOne.configAllowableClosedloopError(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kElevatorAllowableError,
+    elevatorMotorOne.configAllowableClosedloopError(0, Constants.Elevator.kElevatorDeadband,
         Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.configAllowableClosedloopError(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kElevatorAllowableError,
+    elevatorMotorTwo.configAllowableClosedloopError(0, Constants.Elevator.kElevatorDeadband,
         Constants.Elevator.kTimeoutMs);
-    elevatorMotorOne.configAllowableClosedloopError(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kElevatorAllowableError,
-            Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.configAllowableClosedloopError(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kElevatorAllowableError,
-            Constants.Elevator.kTimeoutMs);
     /* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
     // elevatorMotorOne.config_kF(Constants.Elevator.kPIDLoopIdx,
     // Constants.Elevator. kGains.kF, Constants.Elevator.kTimeoutMs);
-    elevatorMotorOne.config_kP(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.elevatorKP,
+    elevatorMotorOne.config_kP(Constants.Elevator.kPIDLoopIdx, Constants.Elevator.elevatorKP,
         Constants.Elevator.kTimeoutMs);
-    elevatorMotorOne.config_kI(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.elevatorKI,
+    elevatorMotorOne.config_kI(Constants.Elevator.kPIDLoopIdx, Constants.Elevator.elevatorKI,
         Constants.Elevator.kTimeoutMs);
-    elevatorMotorOne.config_kD(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.elevatorKD,
+    elevatorMotorOne.config_kD(Constants.Elevator.kPIDLoopIdx, Constants.Elevator.elevatorKD,
         Constants.Elevator.kTimeoutMs);
-    elevatorMotorOne.config_kF(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.elevatorKF,
-        Constants.Elevator.kTimeoutMs);
-
-    elevatorMotorTwo.config_kP(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.elevatorKP,
-        Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.config_kI(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.elevatorKI,
-        Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.config_kD(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.elevatorKD,
-        Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.config_kF(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.elevatorKF,
+    elevatorMotorOne.config_kF(Constants.Elevator.kPIDLoopIdx, Constants.Elevator.elevatorKF,
         Constants.Elevator.kTimeoutMs);
 
-    // config PID for elevator to use when elevator is lowering - lower P so it falls less fast
-    elevatorMotorOne.config_kP(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.elevatorKP,
-            Constants.Elevator.kTimeoutMs);
-    elevatorMotorOne.config_kI(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.elevatorKI,
-            Constants.Elevator.kTimeoutMs);
-    elevatorMotorOne.config_kD(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.elevatorKD,
-            Constants.Elevator.kTimeoutMs);
-    elevatorMotorOne.config_kF(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.elevatorKF,
-            Constants.Elevator.kTimeoutMs);
-
-    elevatorMotorTwo.config_kP(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.fallingElevatorKP,
-            Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.config_kI(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.elevatorKI,
-            Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.config_kD(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.elevatorKD,
-            Constants.Elevator.kTimeoutMs);
-    elevatorMotorTwo.config_kF(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.elevatorKF,
-            Constants.Elevator.kTimeoutMs);
+    elevatorMotorTwo.config_kP(Constants.Elevator.kPIDLoopIdx, Constants.Elevator.elevatorKP,
+        Constants.Elevator.kTimeoutMs);
+    elevatorMotorTwo.config_kI(Constants.Elevator.kPIDLoopIdx, Constants.Elevator.elevatorKI,
+        Constants.Elevator.kTimeoutMs);
+    elevatorMotorTwo.config_kD(Constants.Elevator.kPIDLoopIdx, Constants.Elevator.elevatorKD,
+        Constants.Elevator.kTimeoutMs);
+    elevatorMotorTwo.config_kF(Constants.Elevator.kPIDLoopIdx, Constants.Elevator.elevatorKF,
+        Constants.Elevator.kTimeoutMs);
 
     //elevatorMotorOne.setSelectedSensorPosition(m_encoder);
     //elevatorMotorTwo.setSelectedSensorPosition();
-    m_encoder = elevatorMotorOne.getSelectedSensorPosition(); // * 1.0 / 360.0 * 2.0 * Math.PI * 1.5;
     elevatorMotorTwo.follow(elevatorMotorOne);
+
+    elevatorMotorOne.setSelectedSensorPosition(0);
+    elevatorMotorTwo.setSelectedSensorPosition(0);
+
+    m_encoder = elevatorMotorOne.getSelectedSensorPosition(); // * 1.0 / 360.0 * 2.0 * Math.PI * 1.5;
+
   }
 
   public void setPosition(double goalPosition) {
@@ -151,18 +141,12 @@ public class ElevatorSub extends SubsystemBase {
     if (m_goalPosition > Constants.Elevator.maxExtension) {
       m_goalPosition = Constants.Elevator.maxExtension;
     }
-    else if (m_goalPosition < Constants.Elevator.minExtension){
+    else if (m_goalPosition< Constants.Elevator.minExtension){
       m_goalPosition= Constants.Elevator.minExtension;
     }
     SmartDashboard.putNumber("Elevator Position", m_encoder);
     SmartDashboard.putNumber("Elevator Goal Position", m_goalPosition);
-
-    // if goal position is lower than act position, use falling PID slot
-    if(m_goalPosition > m_encoder){
-      elevatorMotorOne.selectProfileSlot(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kPIDLoopIdx);
-    } else {
-      elevatorMotorOne.selectProfileSlot(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kPIDLoopIdx);
-    }
+   
     // elevatorMotorOne.set(ControlMode.Position,
     // m_controller.calculate(m_encoder));
     elevatorMotorOne.set(TalonFXControlMode.Position, m_goalPosition);//, DemandType.ArbitraryFeedForward,        Constants.Elevator.elevatorKF);
@@ -175,8 +159,8 @@ public class ElevatorSub extends SubsystemBase {
   }
 
   public boolean atSetpoint() {//this might keep autonomous from finishing!!!!!!
-    if (ElevatorPosition() > m_goalPosition - Constants.Elevator.kElevatorDeadband
-        || ElevatorPosition() <m_goalPosition +Constants.Elevator.kElevatorDeadband) {
+    if (ElevatorPosition() > m_goalPosition - Constants.Elevator.kElevatorAllowableRange
+        || ElevatorPosition() <m_goalPosition +Constants.Elevator.kElevatorAllowableRange) {
       return true;
     } else {
       return false;

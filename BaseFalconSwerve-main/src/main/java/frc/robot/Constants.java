@@ -1,5 +1,7 @@
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -7,8 +9,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import frc.lib.VectorTools.HSV;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
+import edu.wpi.first.wpilibj.AddressableLED;
+import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
@@ -192,29 +197,33 @@ public final class Constants {
         public static final int currentLimit = 60;
        // public static final double maxMotorVoltage = 1;
 
-        public static final int kRisingSlotIdx = 0;
-        public static final int kFallingSlotIdx = 1;
+        public static final int kSlotIdx = 0;
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30;
 
         public static final double elevatorKP = .4;
-        public static final double fallingElevatorKP = .2;
         public static final double elevatorKI = 0.0;
         public static final double elevatorKD = .5;
         //public static final double kF = 0.02;
         public static final double elevatorKF = 0;
 		public static final double minExtension = 0;
         
-        public static final double maxExtension = 58000.0;
+        public static final Double maxExtension = 58000.0;
 
         public static boolean kSensorPhase = true;
     	public static boolean kMotorInvert = true;
-        public static final double kElevatorAllowableError = 50.0; // used for allowable error configuration
-        public static final double kElevatorDeadband = 1000.0; // used to check if elevator at position
-        public static final double elevatorMaxOutput = .2;
-        public static final double elevatorDownOutput = -.2;
-        public static final double elevatorHoldOutput = 0.02;
+       // public static double kElevatorDeadband = 1000;
+
+public static final double kElevatorDeadband = 50.0;
+public static final double kElevatorAllowableRange = 1000.0;
+public static final double elevatorMaxOutput = .2;
+public static final double elevatorDownOutput = -.2;
+public static final double elevatorHoldOutput = 0.02;
+
         //static final Gains kGains = new Gains(0.05, 0.0000, 6.0, 0.0, 0, .5);
+
+
+
     }
 
     public static final class Wrist {
@@ -295,40 +304,43 @@ public final class Constants {
         public static final double wristKP = .15;
         public static final double wristKI = 0.0;
         public static final double wristKD = 0.0;
+        
         public static final double wristKF = 0;
 
 
         public static final double motorGearRatio = 1 / 15.0;
         public static final double absoluteEncoderOffset = 5.412927;
         public static final double kWristDeadband = 50;
+        public static final double kWristAllowableRange = 1000.0;
         public static final int kWristCancoderID = 0;
         public static final boolean kSensorPhase = true;
-        public static final double minAngle = -70000; // ticks
-        public static final double maxAngle = 0; // ticks
+        public static final double minExtension =-70000;
+        public static final double maxExtension = 0;
 
     }
 
     public enum Position {
 
-        HIGH(21051, Elevator.maxExtension, -7328),
-        CONEHIGH(-45735, 57894, -17061),
-        CUBEHIGH(-20000, Elevator.maxExtension, -15000),
+        HIGH(21051, 80000, -7328),// not using this
+        CONEHIGH(-43735, 54894, -17061),
+        CUBEHIGH(-20000, 80000, -15000), // not using this
         MID(0, 0, 0),
-        LOW(-56672, Elevator.maxExtension, -17555),
-        CONEMID(-58632, 56913,-16840),
-        CUBEMID(-11496, 45900, -562),
-        CUBEINTAKE(-2897, 2900, 60),
+        LOW(-56672, 90928, -17555), // not using this
+        CONEMID(-55850 , 50118, -14520),
+        CUBEMID(-11496, 45900, -562), //  we aren't using this
+        CUBEINTAKE(-27686, 2900, 60),
         //STANDINGCONEINTAKE(5.106, 14.380, 0),
         //TIPPEDCONEINTAKE(5.572, 1.333, 0),
-        HUMANPLAYERINTAKE(31970, 59, -17733),
-        STOWED(500, 100, 1000);
+        HUMANPLAYERINTAKE(-34370, 4193, -18505),
+        STOWED(500, 100, 1000),
+        OUTAKEAUTO(-4898, 10, 165);
         
 
         private double wristPos;
         private double elevatorPos;
         private double shoulderPos;
 
-        Position(double wrist, double elev, double shld) {
+        private Position(double wrist, double elev, double shld) {
             this.wristPos = wrist;
             this.elevatorPos = elev;
             this.shoulderPos = shld;
@@ -352,7 +364,7 @@ public final class Constants {
 
         private double direction;
 
-        GamePiece(double value) {
+        private GamePiece(double value) {
             direction = value;
         }
 
@@ -432,7 +444,7 @@ public final class Constants {
         // public static double unweightedV = 0.56387;
         // public static double unweightedA = 0.041488;
         // public static double unweightedG = 0.76416;
-        public static final int currentLimit = 20;
+        public static final int currentLimit = 30;
         public static final double maxMotorVoltage = 10;
         public static final int kSlotIdx = 0;
         public static final int kPIDLoopIdx = 0;
@@ -449,11 +461,10 @@ public final class Constants {
         public static final double motorGearRatio = 1 / 60.0;
         public static final double absoluteEncoderOffset = 5.412927;
         public static final double ShoulderKF = 0;
-        public static final double kShoulderAllowableError = 50;
-
-        public static final double kShoulderDeadband = 1000;
-        public static final double maxAngle = 0;
-        public static final double minAngle = -24305;
+        public static final double kShoulderDeadband = 50;
+        public static final double kShoulderAllowableRange = 1000.0;
+        public static final double maxExtension = 0;
+        public static final double minExtension = -24305;
 
         
     }

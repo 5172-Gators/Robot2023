@@ -29,7 +29,6 @@ import frc.robot.commands.SetAllPositions;
 
 /* Commands */
 import frc.robot.commands.Drive.TeleopSwerve;
-import frc.robot.commands.Elevator.ElevatorSetPosition;
 //import frc.robot.commands.Elevator.ElevatorSetPositionHigh;
 import frc.robot.commands.Elevator.TeleopElevator;
 import frc.robot.commands.Intake.IntakeOn;
@@ -37,6 +36,7 @@ import frc.robot.commands.Intake.TeleopIntake;
 import frc.robot.commands.Intake.intakeStop;
 import frc.robot.commands.Wrist.TeleopWrist;
 //import frc.robot.commands.Wrist.WristSetPosition;
+import frc.robot.commands.Shoulder.ShoulderSetPosition;
 import frc.robot.commands.Shoulder.TeleopShoulder;
 
 /* Subsystems */
@@ -105,20 +105,20 @@ public class RobotContainer {
     private static final JoystickButton coneInCubeOutButton = new JoystickButton(operatorStick, 3);
     private static final JoystickButton cubeInConeOutButton = new JoystickButton(operatorStick, 4);
     private static final JoystickButton pickHumanPlayerButton = new JoystickButton(operatorStick, 5);
-    private static final JoystickButton pickStandingConeButton = new JoystickButton(operatorStick, 6);
+   // private static final JoystickButton pickStandingConeButton = new JoystickButton(operatorStick, 6);
     private static final JoystickButton pickTippedConeButton = new JoystickButton(operatorStick, 7);
     private static final JoystickButton pickCubeButton = new JoystickButton(operatorStick, 8);
     private static final JoystickButton stowIntakeButton = new JoystickButton(operatorStick, 9);
     private static final JoystickButton placeHighButton = new JoystickButton(operatorStick, 10);
-    private static final JoystickButton placeMidButton = new JoystickButton(operatorStick, 11);
+    private static final JoystickButton placeMidButton = new JoystickButton(operatorStick, 6);
     private static final JoystickButton placeLowButton = new JoystickButton(operatorStick, 12);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
-    private final IntakeSub s_Intake = new IntakeSub();
-    private final WristSub s_Wrist = new WristSub();
-    private final ElevatorSub s_Elevator = new ElevatorSub();
-    private final ShoulderSub s_Shoulder = new ShoulderSub();
+    private final IntakeSub s_Intake = IntakeSub.getInstance();
+    private final WristSub s_Wrist = WristSub.getInstance();
+    private final ElevatorSub s_Elevator = ElevatorSub.getInstance();
+    private final ShoulderSub s_Shoulder = ShoulderSub.getInstance();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -170,10 +170,10 @@ public class RobotContainer {
 
         // intakeTrigger.onTrue(new InstantCommand(() -> s_Intake.setMotor(1))); // button 1
         // outtakeButton.onTrue(new InstantCommand(() -> s_Intake.setMotor(-1))); // button 2
-//        selectConeButton.onTrue(new InstantCommand(()->
-//        setGamePiece(GamePiece.CONE))); // button 3
-//        selectCubeButton.onTrue(new InstantCommand(()->
-//        setGamePiece(GamePiece.CUBE))); // button 4
+        // selectConeButton.onTrue(new InstantCommand(()->
+        // setGamePiece(GamePiece.CONE))); // button 3
+        // selectCubeButton.onTrue(new InstantCommand(()->
+        // setGamePiece(GamePiece.CUBE))); // button 4
 
         // Rotate Stick
 
@@ -235,18 +235,20 @@ public class RobotContainer {
 
         placeHighButton.onTrue(new SequentialCommandGroup( // button 10
         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-        new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.HIGH, () ->
+        new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CONEHIGH, () ->
         GamePiece.CUBE)));
 
         placeMidButton.onTrue(new SequentialCommandGroup( // button 11
         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-        new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.MID, () ->
+        new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CONEMID, () ->
         GamePiece.CUBE)));
 
-        placeLowButton.onTrue(new SequentialCommandGroup( // button 12
-        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-        new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.LOW, () ->
-        GamePiece.CUBE)));
+        // placeLowButton.onTrue(new SequentialCommandGroup( // button 12
+        // new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+        // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.LOW, () ->
+        // GamePiece.CUBE)));
+
+        // not sure what place low is calling, so it is commented out
 
     }
 
@@ -266,6 +268,6 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
 
 
-         return new exampleAuto(s_Swerve); //new sideAuto(s_Swerve);
+         return new exampleAuto(s_Swerve);
     }
 }

@@ -6,9 +6,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
@@ -36,7 +38,15 @@ public class ShoulderSub extends SubsystemBase {
   private double m_encoder = 0;
   private double m_goalPosition;
 
-  public ShoulderSub() {
+  private static ShoulderSub INSTANCE;
+
+  public static ShoulderSub getInstance(){
+    if(INSTANCE == null){
+      INSTANCE = new ShoulderSub();
+    }
+    return INSTANCE;
+  }
+  private ShoulderSub() {
 
     // initialize motors
     // the right motor will spin clockwise and the left motor will go counter
@@ -46,10 +56,6 @@ public class ShoulderSub extends SubsystemBase {
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.voltageCompSaturation = 12.0;
     config.openloopRamp = k_openLoopRampRate;
-//    config.forwardSoftLimitEnable = true;
-//    config.reverseSoftLimitEnable = true;
-//    config.forwardSoftLimitThreshold = Constants.Shoulder.maxAngle;
-//    config.reverseSoftLimitThreshold = Constants.Shoulder.minAngle;
     config.statorCurrLimit = new StatorCurrentLimitConfiguration(true, k_currentLimit, 0, 0);
 
     ShoulderMotorOne.configAllSettings(config);
@@ -66,7 +72,7 @@ public class ShoulderSub extends SubsystemBase {
 
     ShoulderMotorOne.setSensorPhase(Constants.Shoulder.kSensorPhase);
 
-    ShoulderMotorOne.configAllowableClosedloopError(0, Constants.Shoulder.kShoulderAllowableError,
+    ShoulderMotorOne.configAllowableClosedloopError(0, Constants.Shoulder.kShoulderDeadband,
         Constants.Shoulder.kTimeoutMs);
     /* Config Position Closed Loop gains in slot0, tsypically kF stays zero. */
     // ShoulderMotorOne.config_kF(Constants.Elevator.kPIDLoopIdx,
@@ -102,7 +108,7 @@ public class ShoulderSub extends SubsystemBase {
     m_goalPosition = m_goalPosition + joystickPosition;
   }
 
-  public double getShoulderPosition() {
+  public double ShoulderPosition() {
     return ShoulderMotorOne.getSelectedSensorPosition();
   }
 
@@ -110,11 +116,11 @@ public class ShoulderSub extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     m_encoder = ShoulderMotorOne.getSelectedSensorPosition();// * (1.0 / 360.0 * 2.0 * Math.PI * 1.5);
-    if (m_goalPosition > Constants.Shoulder.maxAngle) {
-      m_goalPosition = Constants.Shoulder.maxAngle;
+    if (m_goalPosition > Constants.Shoulder.maxExtension) {
+      m_goalPosition = Constants.Shoulder.maxExtension;
     }
-    else if (m_goalPosition< Constants.Shoulder.minAngle){
-      m_goalPosition= Constants.Shoulder.minAngle;
+    else if (m_goalPosition< Constants.Shoulder.minExtension){
+      m_goalPosition= Constants.Shoulder.minExtension;
     }
     SmartDashboard.putNumber("Shoulder Position", m_encoder);
     SmartDashboard.putNumber("Shoulder Goal Position", m_goalPosition);
@@ -126,6 +132,12 @@ public class ShoulderSub extends SubsystemBase {
   }
 
   public boolean atSetpoint() {
-    return Math.abs(m_goalPosition - getShoulderPosition()) < Constants.Shoulder.kShoulderDeadband;
+    if (ShoulderPosition() < m_goalPosition + Constants.Shoulder.kShoulderAllowableRange
+        || ShoulderPosition() > Constants.Shoulder.kShoulderAllowableRange) {
+      return true;
+    } else {
+      return false;
+    }
+
   }
 }

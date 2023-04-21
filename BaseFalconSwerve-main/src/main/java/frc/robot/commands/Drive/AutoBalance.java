@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Swerve;
 import frc.robot.subsystems.ElevatorSub;
@@ -52,7 +53,7 @@ public class AutoBalance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-      return startTime + 13 < Timer.getFPGATimestamp() || !DriverStation.isAutonomousEnabled();
+      return startTime + 13 < Timer.getFPGATimestamp()||  !DriverStation.isAutonomousEnabled();
     
   }
 }
