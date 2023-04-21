@@ -1,16 +1,11 @@
 package frc.robot;
 
-import java.util.Optional;
-import java.util.function.DoubleSupplier;
-import java.util.stream.IntStream;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -21,7 +16,6 @@ import frc.robot.Constants.Position;
 
 /* Shuffleboard */
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -34,12 +28,8 @@ import frc.robot.commands.SetAllPositions;
 import frc.robot.commands.Drive.TeleopSwerve;
 //import frc.robot.commands.Elevator.ElevatorSetPositionHigh;
 import frc.robot.commands.Elevator.TeleopElevator;
-import frc.robot.commands.Intake.IntakeOn;
-import frc.robot.commands.Intake.TeleopIntake;
-import frc.robot.commands.Intake.intakeStop;
 import frc.robot.commands.Wrist.TeleopWrist;
 //import frc.robot.commands.Wrist.WristSetPosition;
-import frc.robot.commands.Shoulder.ShoulderSetPosition;
 import frc.robot.commands.Shoulder.TeleopShoulder;
 
 /* Subsystems */
@@ -273,8 +263,8 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-
-
-         return new exampleAuto(s_Swerve);
+        TrajectoryPlaceCubeExitCommunityAutoBalance auto = new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve);
+        s_Swerve.resetOdometry(auto.getInitialTrajectoryPose());
+        return auto;
     }
 }

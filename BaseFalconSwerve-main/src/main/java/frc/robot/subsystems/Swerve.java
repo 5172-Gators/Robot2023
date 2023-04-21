@@ -106,6 +106,8 @@ public class Swerve extends SubsystemBase {
         return positions;
     }
 
+    // should only be called on boot up - if you call zeroOdometry the robot will know where
+    // it's actually pointing and you won't need to rezero after auto enable
     public void zeroGyro(){
         gyro.setYaw(0);
     }

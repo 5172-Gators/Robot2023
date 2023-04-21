@@ -1,7 +1,5 @@
 package frc.robot;
 
-import java.util.function.DoubleSupplier;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -9,11 +7,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
-import frc.lib.VectorTools.HSV;
 import frc.lib.util.COTSFalconSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
-import edu.wpi.first.wpilibj.AddressableLED;
-import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
@@ -164,7 +159,8 @@ public final class Constants {
     }
 
     public static final class Intake {
-        public static final int motorId = 53;
+        public static final int mainMotorId = 53;
+        public static final int followerMotorId = 23;
 
         public static final int pdpChannel = 2; // update number later
 
@@ -323,7 +319,7 @@ public static final double elevatorHoldOutput = 0.02;
 
         HIGH(21051, 80000, -7328),// not using this
         CONEHIGH(-43735, 54894, -17061),
-        CUBEHIGH(-20000, 80000, -15000), // not using this
+        CUBEHIGH(-20000, 54894, -15000), // not using this
         MID(0, 0, 0),
         LOW(-56672, 90928, -17555), // not using this
         CONEMID(-55850 , 50118, -14520),
@@ -332,7 +328,7 @@ public static final double elevatorHoldOutput = 0.02;
         //STANDINGCONEINTAKE(5.106, 14.380, 0),
         //TIPPEDCONEINTAKE(5.572, 1.333, 0),
         HUMANPLAYERINTAKE(-34370, 4193, -18505),
-        STOWED(500, 100, 1000),
+        STOWED(500, 1000, 1000),
         OUTAKEAUTO(-4898, 10, 165);
         
 

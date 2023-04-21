@@ -4,22 +4,19 @@
 
 package frc.robot.commands.Drive;
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.simulation.DriverStationSim;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.ElevatorSub;
-public class AutoBalance extends CommandBase {
+
+public class DriveThenAutoBalance extends CommandBase {
   /** Creates a new TeleopElevatorTest. */
   private Swerve s_Swerve;
 
   private double startTime;
 
-  public AutoBalance(Swerve s_Swerve) {
+  public DriveThenAutoBalance(Swerve s_Swerve) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.s_Swerve = s_Swerve;
     startTime = 0;
