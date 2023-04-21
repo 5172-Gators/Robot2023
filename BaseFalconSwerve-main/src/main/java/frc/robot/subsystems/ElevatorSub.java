@@ -159,12 +159,8 @@ public class ElevatorSub extends SubsystemBase {
   }
 
   public boolean atSetpoint() {//this might keep autonomous from finishing!!!!!!
-    if (ElevatorPosition() > m_goalPosition - Constants.Elevator.kElevatorAllowableRange
-        || ElevatorPosition() <m_goalPosition +Constants.Elevator.kElevatorAllowableRange) {
-      return true;
-    } else {
-      return false;
-    }
+    return ElevatorPosition() > m_goalPosition - Constants.Elevator.kElevatorAllowableRange
+            || ElevatorPosition() < m_goalPosition + Constants.Elevator.kElevatorAllowableRange;
 
   }
 }

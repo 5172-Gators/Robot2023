@@ -132,12 +132,8 @@ public class ShoulderSub extends SubsystemBase {
   }
 
   public boolean atSetpoint() {
-    if (ShoulderPosition() < m_goalPosition + Constants.Shoulder.kShoulderAllowableRange
-        || ShoulderPosition() > Constants.Shoulder.kShoulderAllowableRange) {
-      return true;
-    } else {
-      return false;
-    }
+    return ShoulderPosition() < m_goalPosition + Constants.Shoulder.kShoulderAllowableRange
+            || ShoulderPosition() > Constants.Shoulder.kShoulderAllowableRange;
 
   }
 }
