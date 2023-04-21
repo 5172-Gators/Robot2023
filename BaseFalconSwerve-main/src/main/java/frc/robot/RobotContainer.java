@@ -99,7 +99,7 @@ public class RobotContainer {
     private static final JoystickButton cubeInConeOutButton = new JoystickButton(operatorStick, 4);
     private static final JoystickButton pickHumanPlayerButton = new JoystickButton(operatorStick, 5);
    // private static final JoystickButton pickStandingConeButton = new JoystickButton(operatorStick, 6);
-    private static final JoystickButton pickTippedConeButton = new JoystickButton(operatorStick, 7);
+    private static final JoystickButton midCubeScoreButton = new JoystickButton(operatorStick, 7);
     private static final JoystickButton pickCubeButton = new JoystickButton(operatorStick, 8);
     private static final JoystickButton stowIntakeButton = new JoystickButton(operatorStick, 9);
     private static final JoystickButton placeHighButton = new JoystickButton(operatorStick, 10);
@@ -136,7 +136,7 @@ public class RobotContainer {
 
         s_Wrist.setDefaultCommand(new TeleopWrist(
                 s_Wrist,
-                () -> operatorStick.getTwist() * 1000));
+                () -> (Math.abs(operatorStick.getTwist()) > 0.2) ? operatorStick.getTwist() * 1000 : 0));
 
         // Configure the button bindings
          configureButtonBindings();
@@ -188,9 +188,9 @@ public class RobotContainer {
 
         stopIntake.onTrue(new InstantCommand(() -> s_Intake.setMotor(0)));// button 2
 
-        coneInCubeOutButton.whileTrue(new InstantCommand(() -> s_Intake.setMotor(-0.75))); // button 3
+        coneInCubeOutButton.whileTrue(new InstantCommand(() -> s_Intake.setMotor(-0.40))); // button 3
 
-        cubeInConeOutButton.whileTrue(new InstantCommand(() -> s_Intake.setMotor(0.75)));// button 4
+        cubeInConeOutButton.whileTrue(new InstantCommand(() -> s_Intake.setMotor(0.40)));// button 4
 
 
 
@@ -210,6 +210,11 @@ public class RobotContainer {
         // new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
         // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder,
         // Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
+
+        midCubeScoreButton.onTrue(new SequentialCommandGroup( // button 7
+                new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder,
+                        Position.CUBEMID, () -> GamePiece.CUBE)));
 
         pickCubeButton.onTrue(new SequentialCommandGroup( // button 8
         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),

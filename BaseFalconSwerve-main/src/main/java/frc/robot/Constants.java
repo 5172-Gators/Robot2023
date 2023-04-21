@@ -199,7 +199,7 @@ public final class Constants {
         public static final int kTimeoutMs = 30;
 
         public static final double elevatorKP = .4;
-        public static final double fallingElevatorKP = .2;
+        public static final double fallingElevatorKP = .05;
         public static final double elevatorKI = 0.0;
         public static final double elevatorKD = .5;
         //public static final double kF = 0.02;
@@ -321,17 +321,17 @@ public static final double elevatorHoldOutput = 0.02;
 
         HIGH(21051, 80000, -7328),// not using this
         CONEHIGH(-43735, 54894, -17061),
-        CUBEHIGH(-20000, 54894, -15000), // not using this
+        CUBEHIGH(-33710, 52758, -12520), // not using this
         MID(0, 0, 0),
         LOW(-56672, 90928, -17555), // not using this
         CONEMID(-55850 , 50118, -14520),
-        CUBEMID(-11496, 45900, -562), //  we aren't using this
+        CUBEMID(-31135, 23301, -12520), //  we aren't using this
         CUBEINTAKE(-27686, 2900, 60),
         //STANDINGCONEINTAKE(5.106, 14.380, 0),
         //TIPPEDCONEINTAKE(5.572, 1.333, 0),
         HUMANPLAYERINTAKE(-34370, 4193, -18505),
-        STOWED(500, 1000, 1000),
-        OUTAKEAUTO(-4898, 10, 165);
+        STOWED(-500, 0, 0),
+        OUTAKEAUTO(-14898, 0, 0);
         
 
         private double wristPos;
@@ -442,7 +442,7 @@ public static final double elevatorHoldOutput = 0.02;
         // public static double unweightedV = 0.56387;
         // public static double unweightedA = 0.041488;
         // public static double unweightedG = 0.76416;
-        public static final int currentLimit = 30;
+        public static final int currentLimit = 40;
         public static final double maxMotorVoltage = 10;
         public static final int kSlotIdx = 0;
         public static final int kPIDLoopIdx = 0;

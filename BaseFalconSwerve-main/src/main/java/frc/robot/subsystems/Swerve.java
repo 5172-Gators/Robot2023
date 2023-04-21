@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
 
@@ -58,8 +59,10 @@ public class Swerve extends SubsystemBase {
                 fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
                                     translation.getX(), 
                                     translation.getY(), 
-                                    rotation, 
-                                    getYaw()
+                                    rotation,
+                                    DriverStation.getAlliance() == DriverStation.Alliance.Blue ?
+                                        swerveOdometry.getPoseMeters().getRotation() :
+                                        swerveOdometry.getPoseMeters().getRotation().rotateBy(Rotation2d.fromDegrees(180))
                                 )
                                 : new ChassisSpeeds(
                                     translation.getX(), 

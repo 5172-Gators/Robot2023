@@ -70,19 +70,20 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
         addCommands(
 
                 // wait 0.5 seconds to make sure no code is running in the background
-                new WaitCommand(0.5),
+                new WaitCommand(0.1),
 
                 // set positions out arm doesn't get stuck :(
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.OUTAKEAUTO, () -> GamePiece.CUBE),
-
+                new WaitCommand(0.25),
                 // set position and start outaking - NEED TO TUNE CUBE HIGH POS
-                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CONEMID, () -> GamePiece.CUBE),
+                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEMID, () -> GamePiece.CUBE),
+                new WaitCommand(0.25),
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEHIGH, () -> GamePiece.CUBE),
+                new WaitCommand(0.75),
                 new IntakeOn(s_Intake, false),
-
-                // wait for cube to outake
-                new WaitCommand(1),
-
+                new WaitCommand(0.75),
+                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEMID, () -> GamePiece.CUBE),
+                new WaitCommand(0.75),
                 // set position to stowed and stop the intake
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
                 new intakeStop(s_Intake),

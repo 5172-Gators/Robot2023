@@ -24,7 +24,7 @@ public class IntakeOn extends CommandBase {
 
     @Override
     public void execute() {
-        s_Intake.setMotor(intaking ? 0.75 : -0.75);
+        s_Intake.setMotor(intaking ? 0.40 : -0.40);
         
     }
 

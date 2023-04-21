@@ -22,6 +22,7 @@ public class SetAllPositions extends CommandBase {
 
   private Position k_position;
   private Timer timer;
+  private double startTime;
   private Supplier<GamePiece> k_gamePiece;
 
   /** Creates a new SetAllPositions. */
@@ -42,7 +43,7 @@ public class SetAllPositions extends CommandBase {
   public void initialize() {
     timer.reset();
     timer.start();
-
+    startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -111,7 +112,7 @@ public class SetAllPositions extends CommandBase {
   @Override
   public boolean isFinished() {
     if(DriverStation.isAutonomousEnabled()){
-      return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint() && s_Shoulder.atSetpoint());
+      return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint() && s_Shoulder.atSetpoint()) || startTime + 2 < Timer.getFPGATimestamp() ;
     } else {
       return true;
     }
