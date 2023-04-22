@@ -6,11 +6,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+//import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+//import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
@@ -83,8 +83,8 @@ public class ShoulderSub extends SubsystemBase {
         Constants.Shoulder.kTimeoutMs);
     ShoulderMotorOne.config_kD(Constants.Shoulder.kPIDLoopIdx, Constants.Shoulder.shoulderKD,
         Constants.Shoulder.kTimeoutMs);
-    ShoulderMotorOne.config_kF(Constants.Shoulder.kPIDLoopIdx, Constants.Shoulder.ShoulderKF,
-        Constants.Shoulder.kTimeoutMs);
+    // ShoulderMotorOne.config_kF(Constants.Shoulder.kPIDLoopIdx, Constants.Shoulder.ShoulderKF,
+    //     Constants.Shoulder.kTimeoutMs);
 
     ShoulderMotorOne.setSelectedSensorPosition(0);
     m_encoder = ShoulderMotorOne.getSelectedSensorPosition();
@@ -133,7 +133,7 @@ public class ShoulderSub extends SubsystemBase {
 
   public boolean atSetpoint() {
     return ShoulderPosition() < m_goalPosition + Constants.Shoulder.kShoulderAllowableRange
-            || ShoulderPosition() > Constants.Shoulder.kShoulderAllowableRange;
+            && ShoulderPosition() > Constants.Shoulder.kShoulderAllowableRange;
 
   }
 }

@@ -11,15 +11,15 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ElevatorSub;
 public class TeleopElevator extends CommandBase {
   /** Creates a new TeleopElevatorTest. */
-  private ElevatorSub s_ElevatorTest;
+  private ElevatorSub s_Elevator;
   private DoubleSupplier s_GoalPosition;
 
-  public TeleopElevator(ElevatorSub s_ElevatorTest, DoubleSupplier GoalPosition) {
+  public TeleopElevator(ElevatorSub ElevatorSub, DoubleSupplier GoalPosition) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.s_ElevatorTest = s_ElevatorTest;
+    this.s_Elevator = ElevatorSub;
     this.s_GoalPosition = GoalPosition;
 
-    addRequirements(s_ElevatorTest);
+    addRequirements(ElevatorSub);
   }
 
   // Called when the command is initially scheduled.
@@ -30,7 +30,7 @@ public class TeleopElevator extends CommandBase {
   @Override
    public void execute() {
       
-      s_ElevatorTest.joystickPosition(Math.pow(s_GoalPosition.getAsDouble(),3)*1000); 
+      s_Elevator.joystickPosition(Math.pow(s_GoalPosition.getAsDouble(),3)*100); //TWP: was 1000. Trying to fix jumpy motion
   }
   // Called once the command ends or is interrupted.
   @Override

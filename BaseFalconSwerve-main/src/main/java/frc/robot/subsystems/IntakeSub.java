@@ -17,9 +17,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class IntakeSub extends SubsystemBase {
 
     // Constants
-    private static final double k_intakePercentage = .25;
+ 
     private static final double k_openLoopRampRate = 0.1;
-    private static final int k_currentLimit = 30; // Current limit for intake falcon 500
+   // private static final int k_currentLimit = 30; // Current limit for intake falcon 500
 
     // Components
     private TalonFX m_intakeMotor;

@@ -1,9 +1,6 @@
 package frc.robot;
 
-import com.ctre.phoenix.CANifier;
-import com.ctre.phoenix.CANifierStatusFrame;
 
-import frc.lib.VectorTools.HSV;
 import edu.wpi.first.wpilibj.util.Color;
 
 public final class LEDConstants {
