@@ -111,7 +111,7 @@ public class SetAllPositions extends CommandBase {
   @Override
   public boolean isFinished() {
     if(DriverStation.isAutonomousEnabled()){
-      return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint() && s_Shoulder.atSetpoint());
+      return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint() && s_Shoulder.atSetpoint());// atSetpoint has a deadband for each joint.
     } else {
       return true;
     }

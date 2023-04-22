@@ -160,7 +160,7 @@ public final class Constants {
 
     public static final class Intake {
         public static final int mainMotorId = 53;
-        public static final int followerMotorId = 22;
+        public static final int followerMotorId = 23;
 
         public static final int pdpChannel = 2; // update number later
 
@@ -173,7 +173,9 @@ public final class Constants {
         public static final double coneShootSpeed = 12;
         public static final double cubeOuttakeSpeed = 7;
 
-        public static final int currentLimit = 60;
+        public static final int currentLimit = 30;
+        public static final double kIntakeOnSpeed = .75;
+        public static final double kIntakeOutSpeed = -0.75;
 
         public enum EjectSpeed {
             FAST(12),
@@ -190,7 +192,7 @@ public final class Constants {
     public static final class Elevator {
         public static final int motorOneId = 41;
         public static final int motorTwoId = 42;
-        public static final int currentLimit = 60;
+        public static final int currentLimit = 40;
        // public static final double maxMotorVoltage = 1;
 
         public static final int kRisingSlotIdx = 0;
@@ -214,9 +216,9 @@ public final class Constants {
 
 public static final double kElevatorDeadband = 50.0;
 public static final double kElevatorAllowableRange = 1000.0;
-public static final double elevatorMaxOutput = .2;
-public static final double elevatorDownOutput = -.2;
-public static final double elevatorHoldOutput = 0.02;
+// public static final double elevatorMaxOutput = .2;
+// public static final double elevatorDownOutput = -.2;
+// public static final double elevatorHoldOutput = 0.02;
 
         //static final Gains kGains = new Gains(0.05, 0.0000, 6.0, 0.0, 0, .5);
 
@@ -228,71 +230,71 @@ public static final double elevatorHoldOutput = 0.02;
         public static final int wristMotorID = 23;
         public static final int currentLimit = 30;
         public static final double maxMotorVoltage = 12;
-        public static final int EncoderID = 16;
+        //public static final int EncoderID = 16;
 
         /* limits in motor ticks */
-        public static final double lowerLimit = 387;
-        public static final double upperLimit = 448;
+        // public static final double lowerLimit = 387;
+        // public static final double upperLimit = 448;
 
         /* CANCoder limits */
         public static final double CANCoderLowerLimit = 74.268;
         public static final double CANCoderUpperLimit = 282.393;
 
-        public enum PIDFFmode {
-            WEIGHTED(
-                    Wrist.weightedP,
-                    Wrist.weightedI,
-                    Wrist.weightedD,
-                    Wrist.weightedS,
-                    Wrist.weightedV,
-                    Wrist.weightedA,
-                    Wrist.weightedG),
-            UNWEIGHTED(
-                    Wrist.unweightedP,
-                    Wrist.unweightedI,
-                    Wrist.unweightedD,
-                    Wrist.unweightedS,
-                    Wrist.unweightedV,
-                    Wrist.unweightedA,
-                    Wrist.unweightedG);
+        // public enum PIDFFmode {
+        //     WEIGHTED(
+        //             Wrist.weightedP,
+        //             Wrist.weightedI,
+        //             Wrist.weightedD,
+        //             Wrist.weightedS,
+        //             Wrist.weightedV,
+        //             Wrist.weightedA,
+        //             Wrist.weightedG),
+        //     UNWEIGHTED(
+        //             Wrist.unweightedP,
+        //             Wrist.unweightedI,
+        //             Wrist.unweightedD,
+        //             Wrist.unweightedS,
+        //             Wrist.unweightedV,
+        //             Wrist.unweightedA,
+        //             Wrist.unweightedG);
 
-            public final double kP;
-            public final double kI;
-            public final double kD;
-            public final double kS;
-            public final double kV;
-            public final double kA;
-            public final double kG;
+        //     public final double kP;
+        //     public final double kI;
+        //     public final double kD;
+        //     public final double kS;
+        //     public final double kV;
+        //     public final double kA;
+        //     public final double kG;
 
-            private PIDFFmode(double kP, double kI, double kD, double kS, double kV, double kA, double kG) {
-                this.kP = kP;
-                this.kI = kI;
-                this.kD = kD;
-                this.kS = kS;
-                this.kV = kV;
-                this.kA = kA;
-                this.kG = kG;
-            }
+        //     private PIDFFmode(double kP, double kI, double kD, double kS, double kV, double kA, double kG) {
+        //         this.kP = kP;
+        //         this.kI = kI;
+        //         this.kD = kD;
+        //         this.kS = kS;
+        //         this.kV = kV;
+        //         this.kA = kA;
+        //         this.kG = kG;
+        //     }
 
-        }
+        // }
 
-        public static double weightedP = 2.8;
-        public static double weightedI = 0.0;
-        public static double weightedD = 0.2;
+        // public static double weightedP = 2.8;
+        // public static double weightedI = 0.0;
+        // public static double weightedD = 0.2;
 
-        public static double weightedS = 0.4361;
-        public static double weightedV = 0.79036;
-        public static double weightedA = 0.0;
-        public static double weightedG = 0.86416;
+        // public static double weightedS = 0.4361;
+        // public static double weightedV = 0.79036;
+        // public static double weightedA = 0.0;
+        // public static double weightedG = 0.86416;
 
-        public static double unweightedP = 2.2;
-        public static double unweightedI = 0.0;
-        public static double unweightedD = 0.2;
+        // public static double unweightedP = 2.2;
+        // public static double unweightedI = 0.0;
+        // public static double unweightedD = 0.2;
 
-        public static double unweightedS = 0.11237;
-        public static double unweightedV = 0.56387;
-        public static double unweightedA = 0.041488;
-        public static double unweightedG = 0.76416;
+        // public static double unweightedS = 0.11237;
+        // public static double unweightedV = 0.56387;
+        // public static double unweightedA = 0.041488;
+        // public static double unweightedG = 0.76416;
         
 
         public static final int kSlotIdx = 0;
@@ -373,8 +375,7 @@ public static final double elevatorHoldOutput = 0.02;
 
     public static final class Shoulder{
         public static final int ShoulderMotorID = 52;
-        // public static final int currentLimit = 20;
-        // public static final double maxMotorVoltage = 12;
+  
         public static final int EncoderID = 15;
 
         /* limits in motor ticks (abs value) */
@@ -382,66 +383,10 @@ public static final double elevatorHoldOutput = 0.02;
         public static final double lowerLimit = -15800; 
 
         /* CANCoder limits */
-        public static final double CANCoderUpperLimit = 285.117;
-        public static final double CANCoderLowerLimit = 310.0;
+        // public static final double CANCoderUpperLimit = 285.117;
+        // public static final double CANCoderLowerLimit = 310.0;
        
-        public enum PIDFFmode {
-            WEIGHTED(
-                    Wrist.weightedP,
-                    Wrist.weightedI,
-                    Wrist.weightedD,
-                    Wrist.weightedS,
-                    Wrist.weightedV,
-                    Wrist.weightedA,
-                    Wrist.weightedG),
-            UNWEIGHTED(
-                    Wrist.unweightedP,
-                    Wrist.unweightedI,
-                    Wrist.unweightedD,
-                    Wrist.unweightedS,
-                    Wrist.unweightedV,
-                    Wrist.unweightedA,
-                    Wrist.unweightedG);
-
-            public final double kP;
-            public final double kI;
-            public final double kD;
-            public final double kS;
-            public final double kV;
-            public final double kA;
-            public final double kG;
-
-            private PIDFFmode(double kP, double kI, double kD, double kS, double kV, double kA, double kG) {
-                this.kP = kP;
-                this.kI = kI;
-                this.kD = kD;
-                this.kS = kS;
-                this.kV = kV;
-                this.kA = kA;
-                this.kG = kG;
-            }
-
-        
-
-        }
-
-        // public static double weightedP = 2.0;
-        // public static double weightedI = 0.0;
-        // public static double weightedD = 0.0;
-
-        // public static double weightedS = 0.4361;
-        // public static double weightedV = 0.79036;
-        // public static double weightedA = 0.0;
-        // public static double weightedG = 0.86416;
-
-        // public static double unweightedP = 0.0;
-        // public static double unweightedI = 0.0;
-        // public static double unweightedD = 0.0;
-
-        // public static double unweightedS = 0.11237;
-        // public static double unweightedV = 0.56387;
-        // public static double unweightedA = 0.041488;
-        // public static double unweightedG = 0.76416;
+       
         public static final int currentLimit = 30;
         public static final double maxMotorVoltage = 10;
         public static final int kSlotIdx = 0;
@@ -458,7 +403,6 @@ public static final double elevatorHoldOutput = 0.02;
 
         public static final double motorGearRatio = 1 / 60.0;
         public static final double absoluteEncoderOffset = 5.412927;
-        public static final double ShoulderKF = 0;
         public static final double kShoulderDeadband = 50;
         public static final double kShoulderAllowableRange = 1000.0;
         public static final double maxExtension = 0;

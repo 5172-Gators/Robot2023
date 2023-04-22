@@ -80,10 +80,10 @@ public class RobotContainer {
 
     // Left Stick
 
-    private static final JoystickButton intakeTrigger = new JoystickButton(translateStick, 1);
-    private static final JoystickButton outtakeButton = new JoystickButton(translateStick, 2);
-    private static final JoystickButton selectConeButton = new JoystickButton(translateStick, 3);
-    private static final JoystickButton selectCubeButton = new JoystickButton(translateStick, 4);
+    // private static final JoystickButton intakeTrigger = new JoystickButton(translateStick, 1);
+    // private static final JoystickButton outtakeButton = new JoystickButton(translateStick, 2);
+    // private static final JoystickButton selectConeButton = new JoystickButton(translateStick, 3);
+    // private static final JoystickButton selectCubeButton = new JoystickButton(translateStick, 4);
 
     // Right Stick Buttons
     private static final JoystickButton selectGamepieceTrigger = new JoystickButton(rotateStick, 1);
@@ -99,12 +99,12 @@ public class RobotContainer {
     private static final JoystickButton cubeInConeOutButton = new JoystickButton(operatorStick, 4);
     private static final JoystickButton pickHumanPlayerButton = new JoystickButton(operatorStick, 5);
    // private static final JoystickButton pickStandingConeButton = new JoystickButton(operatorStick, 6);
-    private static final JoystickButton pickTippedConeButton = new JoystickButton(operatorStick, 7);
+    //private static final JoystickButton pickTippedConeButton = new JoystickButton(operatorStick, 7);
     private static final JoystickButton pickCubeButton = new JoystickButton(operatorStick, 8);
     private static final JoystickButton stowIntakeButton = new JoystickButton(operatorStick, 9);
     private static final JoystickButton placeHighButton = new JoystickButton(operatorStick, 10);
     private static final JoystickButton placeMidButton = new JoystickButton(operatorStick, 6);
-    private static final JoystickButton placeLowButton = new JoystickButton(operatorStick, 12);
+    //private static final JoystickButton placeLowButton = new JoystickButton(operatorStick, 12);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
