@@ -30,7 +30,7 @@ public class TeleopElevator extends CommandBase {
   @Override
    public void execute() {
       
-      s_Elevator.joystickPosition(Math.pow(s_GoalPosition.getAsDouble(),3)*100); //TWP: was 1000. Trying to fix jumpy motion
+      s_Elevator.joystickPosition(Math.pow(s_GoalPosition.getAsDouble(),3)*1000); //TWP: was 1000. Trying to fix jumpy motion
   }
   // Called once the command ends or is interrupted.
   @Override

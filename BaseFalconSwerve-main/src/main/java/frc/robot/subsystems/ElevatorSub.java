@@ -169,7 +169,7 @@ public class ElevatorSub extends SubsystemBase {
     SmartDashboard.putNumber("Elevator Goal Position", m_goalPosition);
 
     // if goal position is lower than act position, use falling PID slot
-    if(m_goalPosition + 3000 < m_encoder){
+    if(m_goalPosition + Constants.Elevator.kElevatorAllowableRange < m_encoder){
       elevatorMotorOne.selectProfileSlot(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kPIDLoopIdx);
     } else {
       elevatorMotorOne.selectProfileSlot(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kPIDLoopIdx);
@@ -178,6 +178,9 @@ public class ElevatorSub extends SubsystemBase {
     elevatorMotorOne.set(TalonFXControlMode.Position, m_goalPosition); elevatorMotorTwo.set(TalonFXControlMode.Position, m_goalPosition);
         SmartDashboard.putNumber("Elevator MotorOne Percentage", elevatorMotorOne.getMotorOutputPercent());
        SmartDashboard.putNumber("Elevator MotorTwo Percentage", elevatorMotorTwo.getMotorOutputPercent());
+
+       SmartDashboard.putNumber("Elevator MotorOne Voltage", elevatorMotorOne.getMotorOutputVoltage());
+       SmartDashboard.putNumber("Elevator MotorTwo Voltage", elevatorMotorTwo.getMotorOutputVoltage());
   }
 
   public boolean atSetpoint() {

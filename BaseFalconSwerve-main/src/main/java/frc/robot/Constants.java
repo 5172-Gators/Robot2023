@@ -173,7 +173,7 @@ public final class Constants {
         public static final double coneShootSpeed = 12;
         public static final double cubeOuttakeSpeed = 7;
 
-        public static final int currentLimit = 30;
+        public static final int currentLimit = 60;
         public static final double kIntakeOnSpeed = .75;
         public static final double kIntakeOutSpeed = -0.75;
 
@@ -192,7 +192,7 @@ public final class Constants {
     public static final class Elevator {
         public static final int motorOneId = 41;
         public static final int motorTwoId = 42;
-        public static final int currentLimit = 40;
+        public static final int currentLimit = 60;
        // public static final double maxMotorVoltage = 1;
 
         public static final int kRisingSlotIdx = 0;
@@ -200,10 +200,10 @@ public final class Constants {
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30;
 
-        public static final double elevatorKP = .4;
-        public static final double fallingElevatorKP = .05;
+        public static final double elevatorKP = .5;
+        public static final double fallingElevatorKP = .01;
         public static final double elevatorKI = 0.0;
-        public static final double elevatorKD = .5;
+        public static final double elevatorKD = 0; // was .5 before
         //public static final double kF = 0.02;
         public static final double elevatorKF = 0;
 		public static final double minExtension = 0;
@@ -214,8 +214,8 @@ public final class Constants {
     	public static boolean kMotorInvert = true;
        // public static double kElevatorDeadband = 1000;
 
-public static final double kElevatorDeadband = 50.0;
-public static final double kElevatorAllowableRange = 1000.0;
+public static final double kElevatorDeadband = 10.0;
+public static final double kElevatorAllowableRange = 1500.0;
 // public static final double elevatorMaxOutput = .2;
 // public static final double elevatorDownOutput = -.2;
 // public static final double elevatorHoldOutput = 0.02;
@@ -334,6 +334,7 @@ public static final double kElevatorAllowableRange = 1000.0;
         HUMANPLAYERINTAKE(-34370, 4193, -18505),
         STOWED(-500, 0, 0),
         OUTAKEAUTO(-14898, 0, 0);
+        //AUTOCUBEHIGHTRANSITION(-)
         
 
         private double wristPos;

@@ -1,5 +1,7 @@
 package frc.robot;
 
+import com.ctre.phoenix.motion.TrajectoryPoint;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -126,9 +128,10 @@ public class RobotContainer {
                         () -> robotCentric.getAsBoolean()));
 
         s_Elevator.setDefaultCommand(
-                new TeleopElevator(
-                        s_Elevator,
-                        () -> -operatorStick.getY() ));
+            new TeleopElevator(
+                s_Elevator,
+                () -> -operatorStick.getY()));
+
         s_Shoulder.setDefaultCommand(
             new TeleopShoulder(
                 s_Shoulder,
@@ -188,9 +191,9 @@ public class RobotContainer {
 
         stopIntake.onTrue(new InstantCommand(() -> s_Intake.setMotor(0)));// button 2
 
-        coneInCubeOutButton.whileTrue(new InstantCommand(() -> s_Intake.setMotor(-0.40))); // button 3
+        coneInCubeOutButton.whileTrue(new InstantCommand(() -> s_Intake.setMotor(-0.60))); // button 3
 
-        cubeInConeOutButton.whileTrue(new InstantCommand(() -> s_Intake.setMotor(0.40)));// button 4
+        cubeInConeOutButton.whileTrue(new InstantCommand(() -> s_Intake.setMotor(0.60)));// button 4
 
 
 
@@ -268,8 +271,9 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-        TrajectoryPlaceCubeExitCommunityAutoBalance auto = new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve);
-        s_Swerve.resetOdometry(auto.getInitialTrajectoryPose());
+       //TrajectoryPlaceCubeExitCommunityAutoBalance auto = new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve);
+       TimedPlaceCubeAutoBalance auto  = new TimedPlaceCubeAutoBalance(s_Swerve);
+       // s_Swerve.resetOdometry(auto.getInitialTrajectoryPose());
         return auto;
     }
 }
