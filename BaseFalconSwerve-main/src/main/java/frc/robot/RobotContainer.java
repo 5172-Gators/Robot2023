@@ -18,10 +18,7 @@ import frc.robot.Constants.Position;
 
 /* Shuffleboard */
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
-
-
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /* Autos */
 import frc.robot.autos.*;
 import frc.robot.commands.SetAllPositions;
@@ -72,20 +69,6 @@ public class RobotContainer {
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(rotateStick, 2);
     private final JoystickButton robotCentric = new JoystickButton(operatorStick, 1);
-
-    // private static final JoystickButton driveFastTrigger = new
-    // JoystickButton(translateStick, 1);
-    // private static final JoystickButton driveSlowButton = new
-    // JoystickButton(translateStick, 2);
-    // private static final JoystickButton robotCentric = new
-    // JoystickButton(translateStick, 3);
-
-    // Left Stick
-
-    // private static final JoystickButton intakeTrigger = new JoystickButton(translateStick, 1);
-    // private static final JoystickButton outtakeButton = new JoystickButton(translateStick, 2);
-    // private static final JoystickButton selectConeButton = new JoystickButton(translateStick, 3);
-    // private static final JoystickButton selectCubeButton = new JoystickButton(translateStick, 4);
 
     // Right Stick Buttons
     private static final JoystickButton selectGamepieceTrigger = new JoystickButton(rotateStick, 1);
@@ -144,11 +127,13 @@ public class RobotContainer {
         // Configure the button bindings
          configureButtonBindings();
 
-        // autoChooser.addOption("Do Nothing", null);
+        autoChooser.addOption("Do Nothing", null);
+        autoChooser.addOption("Place Cube Low + Auto Balance", new TimedPlaceCubeAutoBalance(s_Swerve));
+        autoChooser.addOption("High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve));
         // autoChooser.addOption("Middle Auto", new middleAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
         // autoChooser.addOption("Left Or Right Auto", new sideAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
 
-        // SmartDashboard.putData(autoChooser);
+        SmartDashboard.putData(autoChooser);
     }
 
     /**

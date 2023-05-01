@@ -200,13 +200,13 @@ public final class Constants {
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30;
 
-        public static final double elevatorKP = .5;
+        public static final double elevatorKP = .2;
         public static final double fallingElevatorKP = .01;
         public static final double elevatorKI = 0.0;
-        public static final double elevatorKD = 0; // was .5 before
+        public static final double elevatorKD = 0.0; // was .5 before
         //public static final double kF = 0.02;
         public static final double elevatorKF = 0;
-		public static final double minExtension = 0;
+		public static final double minExtension = -700;
         
         public static final double maxExtension = 58000.0;
 
@@ -215,7 +215,7 @@ public final class Constants {
        // public static double kElevatorDeadband = 1000;
 
 public static final double kElevatorDeadband = 10.0;
-public static final double kElevatorAllowableRange = 1500.0;
+public static final double kElevatorAllowableRange = 500.0;
 // public static final double elevatorMaxOutput = .2;
 // public static final double elevatorDownOutput = -.2;
 // public static final double elevatorHoldOutput = 0.02;
@@ -301,7 +301,7 @@ public static final double kElevatorAllowableRange = 1500.0;
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30;
 
-        public static final double wristKP = .15;
+        public static final double wristKP = .02;
         public static final double wristKI = 0.0;
         public static final double wristKD = 0.0;
         
@@ -321,18 +321,18 @@ public static final double kElevatorAllowableRange = 1500.0;
 
     public enum Position {
 
-        HIGH(21051, 80000, -7328),// not using this
-        CONEHIGH(-43735, 54894, -17061),
+        HIGH(21051, 80000, -7328),// not using this 
+        CONEHIGH(-43735, 47335, 28982), // changed 4/30 elev 54894
         CUBEHIGH(-33710, 52758, -12520), // not using this
         MID(0, 0, 0),
-        LOW(-56672, 90928, -17555), // not using this
-        CONEMID(-55850 , 50118, -14520),
+        LOW(-56672, 90928, -17555), // not using this 4/30
+        CONEMID(-55850 , 50118, 29940), // changed
         CUBEMID(-31135, 23301, -12520), //  we aren't using this
-        CUBEINTAKE(-27686, 2900, 60),
-        //STANDINGCONEINTAKE(5.106, 14.380, 0),
-        //TIPPEDCONEINTAKE(5.572, 1.333, 0),
-        HUMANPLAYERINTAKE(-34370, 4193, -18505),
-        STOWED(-500, 0, 0),
+        CUBEINTAKE(-28660, 2800, 1780), //changed 4/30
+        //STANDINGCONEINTAKE(5.106, 14.380, 0),         These have new positions if needed 
+        //TIPPEDCONEINTAKE(5.572, 1.333, 4515), 3603, -41993, 4515
+        HUMANPLAYERINTAKE(-34370, 4193, 29237), //changed 4/30, all have newer gear ratio
+        STOWED(-221, -628, 1609), //-500, 0, 0
         OUTAKEAUTO(-14898, 0, 0);
         //AUTOCUBEHIGHTRANSITION(-)
         
@@ -381,7 +381,7 @@ public static final double kElevatorAllowableRange = 1500.0;
 
         /* limits in motor ticks (abs value) */
         public static final double upperLimit = -725; 
-        public static final double lowerLimit = -15800; 
+        public static final double lowerLimit = 27000; 
 
         /* CANCoder limits */
         // public static final double CANCoderUpperLimit = 285.117;
@@ -394,7 +394,7 @@ public static final double kElevatorAllowableRange = 1500.0;
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30;
 
-        public static final double shoulderKP = .7;
+        public static final double shoulderKP = .1;
         public static final double shoulderKI = 0.0;
         public static final double shoulderKD = 0.0;
         public static final double shoulderkF = 0.0;
@@ -406,8 +406,8 @@ public static final double kElevatorAllowableRange = 1500.0;
         public static final double absoluteEncoderOffset = 5.412927;
         public static final double kShoulderDeadband = 50;
         public static final double kShoulderAllowableRange = 1000.0;
-        public static final double maxExtension = 0;
-        public static final double minExtension = -24305;
+        public static final double maxExtension = 30000;
+        public static final double minExtension = 0;
 
         
     }

@@ -105,7 +105,7 @@ public class ShoulderSub extends SubsystemBase {
   }
 
   public void joystickPosition(double joystickPosition) {
-    m_goalPosition = m_goalPosition + joystickPosition;
+    m_goalPosition = m_goalPosition - joystickPosition;
   }
 
   public double ShoulderPosition() {

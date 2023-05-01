@@ -72,6 +72,8 @@ public class ElevatorSub extends SubsystemBase {
     elevatorMotorTwo.setNeutralMode(NeutralMode.Brake);
     elevatorMotorTwo.setInverted(TalonFXInvertType.CounterClockwise);
     elevatorMotorTwo.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    
+    elevatorMotorTwo.setStatusFramePeriod(StatusFrameEnhanced.Status_2_Feedback0, 20);
 
     /* Config the sensor used for Primary PID and sensor direction */
     elevatorMotorOne.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor,
@@ -169,13 +171,16 @@ public class ElevatorSub extends SubsystemBase {
     SmartDashboard.putNumber("Elevator Goal Position", m_goalPosition);
 
     // if goal position is lower than act position, use falling PID slot
-    if(m_goalPosition + Constants.Elevator.kElevatorAllowableRange < m_encoder){
-      elevatorMotorOne.selectProfileSlot(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kPIDLoopIdx);
-    } else {
-      elevatorMotorOne.selectProfileSlot(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kPIDLoopIdx);
-    }
+    // if(m_goalPosition + Constants.Elevator.kElevatorAllowableRange < m_encoder){
+    //   elevatorMotorOne.selectProfileSlot(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kPIDLoopIdx);
+    // } else {
+    //   elevatorMotorOne.selectProfileSlot(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kPIDLoopIdx);
+    // }
 
-    elevatorMotorOne.set(TalonFXControlMode.Position, m_goalPosition); elevatorMotorTwo.set(TalonFXControlMode.Position, m_goalPosition);
+    elevatorMotorOne.set(TalonFXControlMode.Position, m_goalPosition); 
+elevatorMotorTwo.follow(elevatorMotorOne);
+
+    //elevatorMotorTwo.set(TalonFXControlMode.Position, m_goalPosition);
         SmartDashboard.putNumber("Elevator MotorOne Percentage", elevatorMotorOne.getMotorOutputPercent());
        SmartDashboard.putNumber("Elevator MotorTwo Percentage", elevatorMotorTwo.getMotorOutputPercent());
 
