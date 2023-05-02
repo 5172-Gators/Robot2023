@@ -83,8 +83,8 @@ public class RobotContainer {
     private static final JoystickButton coneInCubeOutButton = new JoystickButton(operatorStick, 3);
     private static final JoystickButton cubeInConeOutButton = new JoystickButton(operatorStick, 4);
     private static final JoystickButton pickHumanPlayerButton = new JoystickButton(operatorStick, 5);
-   // private static final JoystickButton pickStandingConeButton = new JoystickButton(operatorStick, 6);
-    private static final JoystickButton midCubeScoreButton = new JoystickButton(operatorStick, 7);
+    private static final JoystickButton pickTippedConeButton = new JoystickButton(operatorStick, 7);
+    //private static final JoystickButton midCubeScoreButton = new JoystickButton(operatorStick, 7);
     private static final JoystickButton pickCubeButton = new JoystickButton(operatorStick, 8);
     private static final JoystickButton stowIntakeButton = new JoystickButton(operatorStick, 9);
     private static final JoystickButton placeHighButton = new JoystickButton(operatorStick, 10);
@@ -127,7 +127,7 @@ public class RobotContainer {
         // Configure the button bindings
          configureButtonBindings();
 
-        autoChooser.addOption("Do Nothing", null);
+        autoChooser.setDefaultOption("Do Nothing", null);
         autoChooser.addOption("Place Cube Low + Auto Balance", new TimedPlaceCubeAutoBalance(s_Swerve));
         autoChooser.addOption("High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve));
         // autoChooser.addOption("Middle Auto", new middleAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
@@ -194,12 +194,12 @@ public class RobotContainer {
         // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder,
         // Position.STANDINGCONEINTAKE, () -> GamePiece.CONE)));
 
-        // pickTippedConeButton.onTrue(new SequentialCommandGroup( // button 7
-        // new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
-        // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder,
-        // Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
+        pickTippedConeButton.onTrue(new SequentialCommandGroup( // button 7
+        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+        new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder,
+        Position.TIPPEDCONEINTAKE, () -> GamePiece.CONE)));
 
-        midCubeScoreButton.onTrue(new SequentialCommandGroup( // button 7
+        placeMidButton.onTrue(new SequentialCommandGroup( // button 6
                 new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder,
                         Position.CUBEMID, () -> GamePiece.CUBE)));
@@ -212,7 +212,7 @@ public class RobotContainer {
 
         stowIntakeButton.onTrue(new SequentialCommandGroup( // button 9
         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
-        new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEINTAKE, ()
+        new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.HUMANPLAYERINTAKE, ()
         -> GamePiece.CUBE)).
         andThen(new WaitCommand(0.5)).
         andThen(new SequentialCommandGroup(
@@ -256,9 +256,11 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
+
+        return autoChooser.getSelected();
        //TrajectoryPlaceCubeExitCommunityAutoBalance auto = new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve);
-       TimedPlaceCubeAutoBalance auto  = new TimedPlaceCubeAutoBalance(s_Swerve);
+    //    TimedPlaceCubeAutoBalance auto  = new TimedPlaceCubeAutoBalance(s_Swerve);
        // s_Swerve.resetOdometry(auto.getInitialTrajectoryPose());
-        return auto;
+        // return auto;
     }
 }

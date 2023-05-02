@@ -116,7 +116,7 @@ public class ElevatorSub extends SubsystemBase {
         Constants.Elevator.kTimeoutMs);
 
     // config PID for elevator to use when elevator is lowering - lower P so it falls less fast
-    elevatorMotorOne.config_kP(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.elevatorKP,
+    elevatorMotorOne.config_kP(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.fallingElevatorKP,
             Constants.Elevator.kTimeoutMs);
     elevatorMotorOne.config_kI(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.elevatorKI,
             Constants.Elevator.kTimeoutMs);
@@ -170,12 +170,12 @@ public class ElevatorSub extends SubsystemBase {
     SmartDashboard.putNumber("Elevator Position", m_encoder);
     SmartDashboard.putNumber("Elevator Goal Position", m_goalPosition);
 
-    // if goal position is lower than act position, use falling PID slot
-    // if(m_goalPosition + Constants.Elevator.kElevatorAllowableRange < m_encoder){
-    //   elevatorMotorOne.selectProfileSlot(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kPIDLoopIdx);
-    // } else {
-    //   elevatorMotorOne.selectProfileSlot(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kPIDLoopIdx);
-    // }
+    //if goal position is lower than act position, use falling PID slot
+    if(m_goalPosition + Constants.Elevator.kElevatorAllowableRange < m_encoder){
+      elevatorMotorOne.selectProfileSlot(Constants.Elevator.kFallingSlotIdx, Constants.Elevator.kPIDLoopIdx);
+    } else {
+      elevatorMotorOne.selectProfileSlot(Constants.Elevator.kRisingSlotIdx, Constants.Elevator.kPIDLoopIdx);
+    }
 
     elevatorMotorOne.set(TalonFXControlMode.Position, m_goalPosition); 
 elevatorMotorTwo.follow(elevatorMotorOne);
@@ -184,8 +184,8 @@ elevatorMotorTwo.follow(elevatorMotorOne);
         SmartDashboard.putNumber("Elevator MotorOne Percentage", elevatorMotorOne.getMotorOutputPercent());
        SmartDashboard.putNumber("Elevator MotorTwo Percentage", elevatorMotorTwo.getMotorOutputPercent());
 
-       SmartDashboard.putNumber("Elevator MotorOne Voltage", elevatorMotorOne.getMotorOutputVoltage());
-       SmartDashboard.putNumber("Elevator MotorTwo Voltage", elevatorMotorTwo.getMotorOutputVoltage());
+      //  SmartDashboard.putNumber("Elevator MotorOne Voltage", elevatorMotorOne.getMotorOutputVoltage());
+      //  SmartDashboard.putNumber("Elevator MotorTwo Voltage", elevatorMotorTwo.getMotorOutputVoltage());
   }
 
   public boolean atSetpoint() {

@@ -70,7 +70,7 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
         addCommands(
 
                 // wait 0.5 seconds to make sure no code is running in the background
-                new WaitCommand(0.1),
+                new WaitCommand(0.5),
 
                 // set positions out arm doesn't get stuck :(
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.OUTAKEAUTO, () -> GamePiece.CUBE),

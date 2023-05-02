@@ -36,8 +36,8 @@ public class DriveThenAutoBalance extends CommandBase {
       if(Timer.getFPGATimestamp() < startTime + 4 ){
         s_Swerve.drive(new Translation2d(-0.65,0), 0, false, false);
       } else {
-        s_Swerve.drive(new Translation2d(s_Swerve.GetRoll() / 45,0), 0, false, false);
-      }
+        s_Swerve.drive(new Translation2d(s_Swerve.GetRoll() / 35,0), 0, false, false);
+      } // roll is divided by 45
 
   }
   // Called once the command ends or is interrupted.

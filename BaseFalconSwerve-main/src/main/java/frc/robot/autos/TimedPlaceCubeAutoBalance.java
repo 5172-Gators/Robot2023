@@ -77,7 +77,7 @@ public class TimedPlaceCubeAutoBalance extends SequentialCommandGroup {
             new IntakeOn(s_Intake,false),
 
             // wait for cube to outake
-            new WaitCommand(1),
+            new WaitCommand(0.3),
             
             // set position to stowed and stop the intake
             new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
