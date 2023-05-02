@@ -133,7 +133,7 @@ public class WristSub extends SubsystemBase {
   }
 
   public boolean atSetpoint() {
-    return WristPosition() < m_goalPosition + Constants.Wrist.kWristAllowableRange
-            && WristPosition() > m_goalPosition + Constants.Wrist.kWristAllowableRange;
+    return WristPosition() <= m_goalPosition + Constants.Wrist.kWristAllowableRange
+            && WristPosition() >= m_goalPosition - Constants.Wrist.kWristAllowableRange;
   }
 }

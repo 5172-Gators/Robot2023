@@ -301,7 +301,7 @@ public static final double kElevatorAllowableRange = 500.0;
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30;
 
-        public static final double wristKP = .035;
+        public static final double wristKP = .05;
         public static final double wristKI = 0.0;
         public static final double wristKD = 0.0;
         
@@ -332,10 +332,11 @@ public static final double kElevatorAllowableRange = 500.0;
         //STANDINGCONEINTAKE(5.106, 14.380, 0),         These have new positions if needed 
         TIPPEDCONEINTAKE(-38113, 1421, 633),
         HUMANPLAYERINTAKE(-31969, 4071, 29782), //changed 4/30, all have newer gear ratio
+        DOUBLESUBSTATION(-41703, 39640, 22965),
         STOWED(0, 0, 1609), //-500, 0, 0
         OUTAKEAUTO(-14898, 0, 0);
         //AUTOCUBEHIGHTRANSITION(-)
-        
+        //CONEHIGHTRANS(-43735, 47335, 29982);
 
         private double wristPos;
         private double elevatorPos;

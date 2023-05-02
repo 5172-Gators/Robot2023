@@ -189,8 +189,8 @@ elevatorMotorTwo.follow(elevatorMotorOne);
   }
 
   public boolean atSetpoint() {
-    return ElevatorPosition() > m_goalPosition - Constants.Elevator.kElevatorAllowableRange
-            && ElevatorPosition() < m_goalPosition + Constants.Elevator.kElevatorAllowableRange;
+    return ElevatorPosition() >= m_goalPosition - Constants.Elevator.kElevatorAllowableRange
+            && ElevatorPosition() <= m_goalPosition + Constants.Elevator.kElevatorAllowableRange;
 
   }
 }

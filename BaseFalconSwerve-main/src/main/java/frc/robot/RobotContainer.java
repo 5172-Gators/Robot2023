@@ -89,6 +89,7 @@ public class RobotContainer {
     private static final JoystickButton stowIntakeButton = new JoystickButton(operatorStick, 9);
     private static final JoystickButton placeHighButton = new JoystickButton(operatorStick, 10);
     private static final JoystickButton placeMidButton = new JoystickButton(operatorStick, 6);
+    private static final JoystickButton pickDoubleSub = new JoystickButton(operatorStick, 16);
     //private static final JoystickButton placeLowButton = new JoystickButton(operatorStick, 12);
 
     /* Subsystems */
@@ -227,11 +228,26 @@ public class RobotContainer {
         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
         new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CONEHIGH, () ->
         GamePiece.CUBE)));
+       // andThen(new WaitCommand(1.00)).
+        //andThen(new SequentialCommandGroup(
+        // new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CONEHIGH, () ->
+        // GamePiece.CONE))));
+        //trying to smoothen transistion 
+        
 
         placeMidButton.onTrue(new SequentialCommandGroup( // button 11
         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
         new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CONEMID, () ->
         GamePiece.CUBE)));
+
+
+        
+        pickDoubleSub.onTrue(new SequentialCommandGroup( // button 16
+        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+        new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.DOUBLESUBSTATION, () ->
+        GamePiece.CONE)));
+
+
 
         // placeLowButton.onTrue(new SequentialCommandGroup( // button 12
         // new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
