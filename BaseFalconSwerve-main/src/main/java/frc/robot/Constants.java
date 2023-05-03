@@ -336,7 +336,6 @@ public static final double kElevatorAllowableRange = 500.0;
         STOWED(0, 0, 1609), //-500, 0, 0
         OUTAKEAUTO(-14898, 0, 0);
         //AUTOCUBEHIGHTRANSITION(-)
-        //CONEHIGHTRANS(-43735, 47335, 29982);
 
         private double wristPos;
         private double elevatorPos;
