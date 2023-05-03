@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -46,6 +47,8 @@ import frc.robot.subsystems.*;
 public class RobotContainer {
 
     public static GamePiece gamePiece = GamePiece.CONE;
+
+    private Field2d field2d;
 
     /* Auto Selector */
     private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -135,6 +138,8 @@ public class RobotContainer {
         // autoChooser.addOption("Left Or Right Auto", new sideAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
 
         SmartDashboard.putData("Auto mode", autoChooser); // appends chooser to shuffleboard
+
+        field2d = new Field2d();
     }
 
     /**
@@ -274,5 +279,10 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
        Command auto = autoChooser.getSelected();
        return auto;
+    }
+
+    public void updateSimulation(){
+        field2d.setRobotPose(s_Swerve.getPose());
+        SmartDashboard.putData("Field", field2d);
     }
 }
