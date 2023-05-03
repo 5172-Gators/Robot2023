@@ -9,13 +9,17 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.Position;
+import frc.robot.Robot;
+import frc.robot.commands.Drive.DriveThenAutoBalance;
 import frc.robot.commands.Drive.JustAutobalance;
+import frc.robot.commands.Drive.ResetDriveOdometry;
 import frc.robot.commands.Intake.IntakeOn;
 import frc.robot.commands.Intake.intakeStop;
 import frc.robot.commands.SetAllPositions;
@@ -33,28 +37,31 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
 
     public TrajectoryPlaceCubeExitCommunityAutoBalance(Swerve s_Swerve) {
 
+        // hard coding field position for simulation
+        DriverStation.Alliance color = RobotBase.isReal() ? DriverStation.getAlliance() : DriverStation.Alliance.Blue;
+
         // because depending on if ur blue or red, forwards on the field is backwards relative to your respective driverstation
-        Rotation2d forwardRelativeToDriver = DriverStation.getAlliance() == DriverStation.Alliance.Blue ? Rotation2d.fromDegrees(0) : Rotation2d.fromDegrees(180);
-        Rotation2d backwardsRelativeToDriver = DriverStation.getAlliance() == DriverStation.Alliance.Blue ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
+        Rotation2d forwardRelativeToDriver = color == DriverStation.Alliance.Blue ? Rotation2d.fromDegrees(0) : Rotation2d.fromDegrees(180);
+        Rotation2d backwardsRelativeToDriver = color == DriverStation.Alliance.Blue ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
 
         // trajectory generation
         TrajectoryConfig config = new TrajectoryConfig(Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared).setKinematics(Constants.Swerve.swerveKinematics);
         // An example trajectory to follow.  All units in meters.
         Trajectory startToAutobalance = TrajectoryGenerator.generateTrajectory(
                 // Pass through these two interior waypoints
-                List.of(new Pose2d(0, 0, forwardRelativeToDriver), new Pose2d(3, 0, forwardRelativeToDriver)),
+                List.of(new Pose2d(1.58, 2.77, forwardRelativeToDriver), new Pose2d(4.58, 2.77, forwardRelativeToDriver)),
                 config
         );
 
         Trajectory autoBalanceToOutsideCommunity = TrajectoryGenerator.generateTrajectory(
                 // Pass through these two interior waypoints
-                List.of(new Pose2d(3, 0, forwardRelativeToDriver), new Pose2d(5, 0, forwardRelativeToDriver)),
+                List.of(new Pose2d(4.58, 2.77, forwardRelativeToDriver), new Pose2d(6.58, 2.77, forwardRelativeToDriver)),
                 config
         );
 
         Trajectory outsideCommunityToAutoBalance = TrajectoryGenerator.generateTrajectory(
                 // Pass through these two interior waypoints
-                List.of(new Pose2d(5, 0, backwardsRelativeToDriver), new Pose2d(3, 0, backwardsRelativeToDriver)),
+                List.of(new Pose2d(6.58, 2.77, backwardsRelativeToDriver), new Pose2d(4.58, 2.77, backwardsRelativeToDriver)),
                 config
         );
 
@@ -71,19 +78,16 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
 
                 // wait 0.5 seconds to make sure no code is running in the background
                 new WaitCommand(0.5),
-
-                // set positions out arm doesn't get stuck :(
+                new ResetDriveOdometry(initialRobotPos, s_Swerve),
+                // set positions out arm doesn't get stuck
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.OUTAKEAUTO, () -> GamePiece.CUBE),
                 new WaitCommand(0.25),
-                // set position and start outaking - NEED TO TUNE CUBE HIGH POS
-                //new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEMID, () -> GamePiece.CUBE),
-                //new WaitCommand(0.25),
+
+                // set pos to score
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEHIGH, () -> GamePiece.CUBE),
-               // new WaitCommand(0.75),
                 new IntakeOn(s_Intake, false),
                 new WaitCommand(0.75),
-                //new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEMID, () -> GamePiece.CUBE),
-               // new WaitCommand(0.75),
+
                 // set position to stowed and stop the intake
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
                 new intakeStop(s_Intake),

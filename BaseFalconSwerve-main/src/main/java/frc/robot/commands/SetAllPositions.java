@@ -44,6 +44,7 @@ public class SetAllPositions extends CommandBase {
     timer.reset();
     timer.start();
     startTime = Timer.getFPGATimestamp();
+    System.out.println("setting positions to: " + k_position + "...");
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -76,19 +77,6 @@ public class SetAllPositions extends CommandBase {
         }
         break;
 
-      // case LOW:
-      //   if (k_gamePiece.get() == GamePiece.CONE) {
-      //     s_Wrist.setPosition(Position.CONELOW.getWrist());
-      //     s_Elevator.setPosition(Position.CONELOW.getElev());
-      //     s_Shoulder.setPosition(Position.CONELOW.getShoulder());
-
-      //   } else if (k_gamePiece.get() == GamePiece.CUBE) {
-      //     s_Wrist.setPosition(Position.CUBELOW.getWrist());
-      //     s_Elevator.setPosition(Position.CUBELOW.getElev());
-      //     s_Shoulder.setPosition(Position.CONELOW.getShoulder());
-      //   }
-        // break;
-
       default:
         s_Wrist.setPosition(k_position.getWrist());
         s_Elevator.setPosition(k_position.getElev());
@@ -106,13 +94,14 @@ public class SetAllPositions extends CommandBase {
     timer.stop();
     timer.reset();
 
+    System.out.println("set position finished.");
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     if(DriverStation.isAutonomousEnabled()){
-      return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint() && s_Shoulder.atSetpoint()) || startTime + 2 < Timer.getFPGATimestamp() ;
+      return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint() && s_Shoulder.atSetpoint()) || timer.hasElapsed(2);
     } else {
       return true;
     }

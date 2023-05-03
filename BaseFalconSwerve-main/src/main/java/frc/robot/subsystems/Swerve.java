@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.RobotBase;
+import frc.robot.Robot;
 import frc.robot.SwerveModule;
 import frc.robot.Constants;
 
@@ -24,6 +27,8 @@ public class Swerve extends SubsystemBase {
     public SwerveModule[] mSwerveMods;
     public Pigeon2 gyro;
 
+    private Rotation2d gyroYaw;
+
     private static Swerve INSTANCE;
 
     public static Swerve getInstance(){
@@ -36,6 +41,7 @@ public class Swerve extends SubsystemBase {
         gyro = new Pigeon2(Constants.Swerve.pigeonID);
         gyro.configFactoryDefault();
         zeroGyro();
+        gyroYaw = new Rotation2d();
 
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.constants),
@@ -54,6 +60,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+        System.out.println("rotation in drive = " + rotation);
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                 fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -66,7 +73,7 @@ public class Swerve extends SubsystemBase {
                                 )
                                 : new ChassisSpeeds(
                                     translation.getX(), 
-                                    translation.getY(), 
+                                    translation.getY(),
                                     rotation)
                                 );
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
@@ -113,6 +120,7 @@ public class Swerve extends SubsystemBase {
     // it's actually pointing and you won't need to rezero after auto enable
     public void zeroGyro(){
         gyro.setYaw(0);
+        gyroYaw = new Rotation2d();
     }
 
     public double GetRoll()
@@ -126,7 +134,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getYaw() {
-        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
+        return gyroYaw;
     }
 
     public void resetModulesToAbsolute(){
@@ -137,7 +145,16 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
-        swerveOdometry.update(getYaw(), getModulePositions());  
+        // simulating gyro movement
+        if(RobotBase.isSimulation()){
+            var rotDt = Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates()).omegaRadiansPerSecond * Robot.kDefaultPeriod;
+            System.out.println("rot dt = " + rotDt);
+            gyroYaw = gyroYaw.rotateBy(Rotation2d.fromRadians(rotDt));
+        } else {
+            gyroYaw = (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
+        }
+
+        swerveOdometry.update(getYaw(), getModulePositions());
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());

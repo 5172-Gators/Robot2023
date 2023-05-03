@@ -17,32 +17,31 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class IntakeSub extends SubsystemBase {
 
     // Constants
- 
+
     private static final double k_openLoopRampRate = 0.1;
-   // private static final int k_currentLimit = 30; // Current limit for intake falcon 500
+    // private static final int k_currentLimit = 30; // Current limit for intake falcon 500
 
     // Components
     private TalonFX m_intakeMotor;
     private TalonFX m_intakeMotorFollower;
 
     // private final CANSparkMax intakeMotor;
-  //  private final double m_intakeEncoder;
+    //  private final double m_intakeEncoder;
 
     /* Game Piece Currently In Robot */
 
     /**
      * Constructor for intake subsystem.
      */
-    
-  private static IntakeSub INSTANCE;
-    
-    public static IntakeSub getInstance(){
-        if(INSTANCE == null){
-          INSTANCE = new IntakeSub();
+
+    private static IntakeSub INSTANCE;
+
+    public static IntakeSub getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new IntakeSub();
         }
         return INSTANCE;
-      }
-
+    }
 
 
     private IntakeSub() {
@@ -74,7 +73,7 @@ public class IntakeSub extends SubsystemBase {
      * public void setGamePiece(GamePiece piece) {
      * gamePiece = piece;
      * }
-     * 
+     *
      * public GamePiece getGamePiece() {
      * return gamePiece;
      * }
@@ -92,7 +91,7 @@ public class IntakeSub extends SubsystemBase {
         return m_intakeMotor.getSelectedSensorVelocity();
     }
 
-    public void stopIntake(){
+    public void stopIntake() {
         m_intakeMotor.set(TalonFXControlMode.PercentOutput, 0);
     }
 
@@ -108,10 +107,9 @@ public class IntakeSub extends SubsystemBase {
     }
 
 
-
     public void resetIntakeEncoder() {
         m_intakeMotor.setSelectedSensorPosition(0);
-       // m_intakeEncoder= m_intakeMotor.getSelectedSensorPosition();
+        // m_intakeEncoder= m_intakeMotor.getSelectedSensorPosition();
 
     }
 
