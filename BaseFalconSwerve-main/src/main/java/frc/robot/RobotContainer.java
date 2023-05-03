@@ -48,7 +48,7 @@ public class RobotContainer {
     public static GamePiece gamePiece = GamePiece.CONE;
 
     /* Auto Selector */
-    private final SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+    private final SendableChooser<Command> autoChooser = new SendableChooser<>();
 
     private static final String kDefaultAuto = "Default";
     private static final String kCustomAuto = "My Auto";
@@ -134,7 +134,7 @@ public class RobotContainer {
         // autoChooser.addOption("Middle Auto", new middleAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
         // autoChooser.addOption("Left Or Right Auto", new sideAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
 
-        SmartDashboard.putData(autoChooser);
+        SmartDashboard.putData("Auto mode", autoChooser); // appends chooser to shuffleboard
     }
 
     /**
@@ -272,11 +272,7 @@ public class RobotContainer {
      * @return the command to run in autonomous
      */
     public Command getAutonomousCommand() {
-
-        return autoChooser.getSelected();
-       //TrajectoryPlaceCubeExitCommunityAutoBalance auto = new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve);
-    //    TimedPlaceCubeAutoBalance auto  = new TimedPlaceCubeAutoBalance(s_Swerve);
-       // s_Swerve.resetOdometry(auto.getInitialTrajectoryPose());
-        // return auto;
+       Command auto = autoChooser.getSelected();
+       return auto;
     }
 }

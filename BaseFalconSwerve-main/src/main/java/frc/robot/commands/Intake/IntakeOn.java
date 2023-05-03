@@ -15,9 +15,13 @@ public class IntakeOn extends CommandBase {
     }
 
     @Override
+    public void initialize() {
+        s_Intake.setMotor(intaking ? Constants.Intake.kIntakeOnSpeed : Constants.Intake.kIntakeOutSpeed);
+    }
+
+    @Override
     public void execute() {
         s_Intake.setMotor(intaking ? Constants.Intake.kIntakeOnSpeed : Constants.Intake.kIntakeOutSpeed);
-        
     }
 
     public void end(boolean Interrupted){

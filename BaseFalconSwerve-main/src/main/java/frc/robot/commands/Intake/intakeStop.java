@@ -15,19 +15,22 @@ public class intakeStop extends CommandBase {
     }
 
     @Override
+    public void initialize() {
+        s_Intake.setMotor(0);
+    }
+
+    @Override
     public void execute() {
         s_Intake.setMotor(0);
-        
     }
 
     public void end(boolean Interrupted){
-       // s_Intake.stopIntake();
+        System.out.println("stopped intaking.");
     }
 
     @Override
     public boolean isFinished() {
 
-        //s_Intake.setMotor(0);
       return true;
     }
     

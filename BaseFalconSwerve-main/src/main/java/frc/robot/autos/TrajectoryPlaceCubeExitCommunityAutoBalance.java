@@ -16,6 +16,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.GamePiece;
 import frc.robot.Constants.Position;
 import frc.robot.commands.Drive.JustAutobalance;
+import frc.robot.commands.Drive.ResetDriveOdometry;
 import frc.robot.commands.Intake.IntakeOn;
 import frc.robot.commands.Intake.intakeStop;
 import frc.robot.commands.SetAllPositions;
@@ -71,19 +72,16 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
 
                 // wait 0.5 seconds to make sure no code is running in the background
                 new WaitCommand(0.5),
-
-                // set positions out arm doesn't get stuck :(
+                new ResetDriveOdometry(initialRobotPos, s_Swerve),
+                // set positions out arm doesn't get stuck
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.OUTAKEAUTO, () -> GamePiece.CUBE),
                 new WaitCommand(0.25),
-                // set position and start outaking - NEED TO TUNE CUBE HIGH POS
-                //new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEMID, () -> GamePiece.CUBE),
-                //new WaitCommand(0.25),
+
+                // set pos to score
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEHIGH, () -> GamePiece.CUBE),
-               // new WaitCommand(0.75),
                 new IntakeOn(s_Intake, false),
                 new WaitCommand(0.75),
-                //new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEMID, () -> GamePiece.CUBE),
-               // new WaitCommand(0.75),
+
                 // set position to stowed and stop the intake
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
                 new intakeStop(s_Intake),
