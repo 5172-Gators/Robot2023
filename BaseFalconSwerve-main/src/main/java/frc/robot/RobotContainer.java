@@ -57,6 +57,7 @@ public class RobotContainer {
     private static final String kCustomAuto = "My Auto";
     private String m_autoSelected;
 
+    private final SendableChooser<String> m_chooser = new SendableChooser<>();
     /* Controllers */
     private final static Joystick translateStick = new Joystick(0);
     private final static Joystick rotateStick = new Joystick(1);
@@ -121,7 +122,7 @@ public class RobotContainer {
         s_Shoulder.setDefaultCommand(
             new TeleopShoulder(
                 s_Shoulder,
-                () -> (Math.abs(operatorStick.getX()) > 0.2) ? operatorStick.getX() * 1000 : 0));
+                () -> operatorStick.getX() * 1000));
 
         s_Wrist.setDefaultCommand(new TeleopWrist(
                 s_Wrist,
@@ -130,13 +131,13 @@ public class RobotContainer {
         // Configure the button bindings
          configureButtonBindings();
 
-        autoChooser.addOption("Do Nothing", null);
+        autoChooser.setDefaultOption("Do Nothing", null);
         autoChooser.addOption("Place Cube Low + Auto Balance", new TimedPlaceCubeAutoBalance(s_Swerve));
-        autoChooser.setDefaultOption("High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve));
+        autoChooser.addOption("High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve));
         // autoChooser.addOption("Middle Auto", new middleAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
         // autoChooser.addOption("Left Or Right Auto", new sideAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
 
-        SmartDashboard.putData("Auto Mode", autoChooser); // appends chooser to shuffleboard
+        SmartDashboard.putData("Auto mode", autoChooser); // appends chooser to shuffleboard
 
         field2d = new Field2d();
     }
@@ -216,9 +217,9 @@ public class RobotContainer {
 
 
         stowIntakeButton.onTrue(new SequentialCommandGroup( // button 9
-        new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
+        new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
         new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.HUMANPLAYERINTAKE, ()
-        -> GamePiece.CONE)).
+        -> GamePiece.CUBE)).
         andThen(new WaitCommand(0.5)).
         andThen(new SequentialCommandGroup(
         new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () ->
