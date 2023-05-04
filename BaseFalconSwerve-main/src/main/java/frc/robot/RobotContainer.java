@@ -133,7 +133,8 @@ public class RobotContainer {
 
         autoChooser.setDefaultOption("Do Nothing", null);
         autoChooser.addOption("Place Cube Low + Auto Balance", new TimedPlaceCubeAutoBalance(s_Swerve));
-        autoChooser.addOption("High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve));
+        autoChooser.addOption("BLUE SIDE High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(DriverStation.Alliance.Blue, s_Swerve));
+        autoChooser.addOption("RED SIDE High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(DriverStation.Alliance.Red, s_Swerve));
         // autoChooser.addOption("Middle Auto", new middleAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
         // autoChooser.addOption("Left Or Right Auto", new sideAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
 
