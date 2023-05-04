@@ -102,6 +102,7 @@ public class SetAllPositions extends CommandBase {
   public boolean isFinished() {
     if(DriverStation.isAutonomousEnabled()){
       return (s_Wrist.atSetpoint() && s_Elevator.atSetpoint() && s_Shoulder.atSetpoint()) || timer.hasElapsed(2);
+      
     } else {
       return true;
     }
