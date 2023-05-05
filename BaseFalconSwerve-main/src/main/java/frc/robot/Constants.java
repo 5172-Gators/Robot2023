@@ -321,22 +321,7 @@ public static final double kElevatorAllowableRange = 500.0;
 
     public enum Position {
 
-<<<<<<< Updated upstream
-        HIGH(21051, 80000, -7328),// not using this 
-        CONEHIGH(-93023, 48307, 29749), // changed 4/30 elev 54894
-        CUBEHIGH(-55306, 49586, 17688), // not using this
-        MID(0, 0, 0),
-        LOW(-56672, 90928, -17555), // not using this 4/30
-        CONEMID(-115716 , 45249, 29744), // changed
-        CUBEMID(-52564, 20712, 14763), //  we aren't using this
-        CUBEINTAKE(-68562, 107, 1157), //changed 4/30
-        //STANDINGCONEINTAKE(5.106, 14.380, 0),         These have new positions if needed 
-        TIPPEDCONEINTAKE(-90295, 3346, 218),
-        HUMANPLAYERINTAKE(-73466, -20, 29734), //changed 4/30, all have newer gear ratio
-        DOUBLESUBSTATION(-79877, 36606, 17912),
-        STOWED(-2000, -585, 222), //-500, 0, 0
-        OUTAKEAUTO(-21226, 92, 76);
-=======
+
         HIGH(21051, 80000, -7328),// not using this
         CONEHIGH(-96650, 47335, 29982), 
         CUBEHIGH(-43769, 47700, 29855), // using
@@ -352,8 +337,8 @@ public static final double kElevatorAllowableRange = 500.0;
         DOUBLESUBSTATION(-41703, 39640, 22965),
         STOWED(-6365, 0, 2489), //1609 shoulder
         AUTOWRISTPOSITION(-13782, -78, 2441),
-        OUTAKEAUTO(-14898, 0, 0);
->>>>>>> Stashed changes
+        OUTAKEAUTO(-19500, 0, 0);
+
         //AUTOCUBEHIGHTRANSITION(-)
 
         private double wristPos;
@@ -413,11 +398,8 @@ public static final double kElevatorAllowableRange = 500.0;
         public static final int kPIDLoopIdx = 0;
         public static final int kTimeoutMs = 30;
 
-<<<<<<< Updated upstream
-        public static final double shoulderKP = .10;
-=======
+
         public static final double shoulderKP = .4;
->>>>>>> Stashed changes
         public static final double shoulderKI = 0.0;
         public static final double shoulderKD = 0.0;
         public static final double shoulderkF = 0.0;
