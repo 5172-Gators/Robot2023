@@ -59,11 +59,45 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
                 config
         );
 
+<<<<<<< Updated upstream
         Trajectory outsideCommunityToAutoBalance = TrajectoryGenerator.generateTrajectory(
                 // Pass through these two interior waypoints
                 List.of(new Pose2d(6.58, 2.77, backwardsRelativeToDriver), new Pose2d(4.58, 2.77, backwardsRelativeToDriver)),
                 config
         );
+=======
+            autoBalanceToOutsideCommunity = TrajectoryGenerator.generateTrajectory(
+                    // Pass through these two interior waypoints
+                    List.of(new Pose2d(4.4, 2.77, forwardRelativeToDriver), new Pose2d(6.58, 2.77, forwardRelativeToDriver)),
+                    config
+            );
+
+            outsideCommunityToAutoBalance = TrajectoryGenerator.generateTrajectory(
+                    // Pass through these two interior waypoints
+                    List.of(new Pose2d(6., 2.77, backwardsRelativeToDriver), new Pose2d(4.58, 2.77, backwardsRelativeToDriver)),
+                    config
+            );
+        } else {
+            double fieldXLength = 16; // abt 16 meters
+            startToAutobalance = TrajectoryGenerator.generateTrajectory(
+                    // Pass through these two interior waypoints
+                    List.of(new Pose2d(fieldXLength - 1.58, 2.77, forwardRelativeToDriver), new Pose2d(fieldXLength - 4.58, 2.77, forwardRelativeToDriver)),
+                    config
+            );
+
+            autoBalanceToOutsideCommunity = TrajectoryGenerator.generateTrajectory(
+                    // Pass through these two interior waypoints
+                    List.of(new Pose2d(fieldXLength - 4.58, 2.77, forwardRelativeToDriver), new Pose2d(fieldXLength - 5.75, 2.77, forwardRelativeToDriver)),
+                    config
+            );
+
+            outsideCommunityToAutoBalance = TrajectoryGenerator.generateTrajectory(
+                    // Pass through these two interior waypoints
+                    List.of(new Pose2d(fieldXLength - 5.75, 2.77, backwardsRelativeToDriver), new Pose2d(fieldXLength - 5.00, 2.77, backwardsRelativeToDriver)),
+                    config
+            );
+        }
+>>>>>>> Stashed changes
 
         var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -80,17 +114,21 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
                 new WaitCommand(0.5),
                 new ResetDriveOdometry(initialRobotPos, s_Swerve),
                 // set positions out arm doesn't get stuck
-                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.OUTAKEAUTO, () -> GamePiece.CUBE),
+                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.AUTOWRISTPOSITION, () -> GamePiece.CONE),
                 new WaitCommand(0.25),
 
                 // set pos to score
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEHIGH, () -> GamePiece.CUBE),
                 new IntakeOn(s_Intake, false),
-                new WaitCommand(0.75),
+                new WaitCommand(0.25),
+
+                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.AUTOWRISTPOSITION, () -> GamePiece.CONE),
+                new intakeStop(s_Intake),
+               // new WaitCommand(0.25),
 
                 // set position to stowed and stop the intake
-                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
-                new intakeStop(s_Intake),
+                //new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
+                
 
                 // autobalance
                 nodeToAutobalanceCommand,

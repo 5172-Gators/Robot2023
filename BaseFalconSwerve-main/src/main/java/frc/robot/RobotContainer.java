@@ -73,6 +73,8 @@ public class RobotContainer {
     private final JoystickButton zeroGyro = new JoystickButton(rotateStick, 2);
     private final JoystickButton robotCentric = new JoystickButton(operatorStick, 1);
 
+    private final JoystickButton highCube = new JoystickButton(rotateStick, 1);
+
     // Right Stick Buttons
     private static final JoystickButton selectGamepieceTrigger = new JoystickButton(rotateStick, 1);
     private static final JoystickButton resetGyroButton = new JoystickButton(rotateStick, 2);
@@ -133,10 +135,16 @@ public class RobotContainer {
 
         autoChooser.setDefaultOption("Do Nothing", null);
         autoChooser.addOption("Place Cube Low + Auto Balance", new TimedPlaceCubeAutoBalance(s_Swerve));
+<<<<<<< Updated upstream
         autoChooser.addOption("High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(s_Swerve));
         // autoChooser.addOption("Middle Auto", new middleAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
         // autoChooser.addOption("Left Or Right Auto", new sideAuto(s_Swerve, s_Elevator, s_Shoulder, s_Wrist, s_Intake));
 
+=======
+        autoChooser.addOption("BLUE SIDE High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(DriverStation.Alliance.Blue, s_Swerve));
+        autoChooser.addOption("RED SIDE High Cube + Exit Community + Auto Balance", new TrajectoryPlaceCubeExitCommunityAutoBalance(DriverStation.Alliance.Red, s_Swerve));
+     
+>>>>>>> Stashed changes
         SmartDashboard.putData("Auto mode", autoChooser); // appends chooser to shuffleboard
 
         field2d = new Field2d();
@@ -154,6 +162,8 @@ public class RobotContainer {
         /* Driver Buttons */
 
         // Translate Stick
+
+
 
         // intakeTrigger.onTrue(new InstantCommand(() -> s_Intake.setMotor(1))); // button 1
         // outtakeButton.onTrue(new InstantCommand(() -> s_Intake.setMotor(-1))); // button 2
@@ -219,7 +229,7 @@ public class RobotContainer {
         stowIntakeButton.onTrue(new SequentialCommandGroup( // button 9
         new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
         new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.HUMANPLAYERINTAKE, ()
-        -> GamePiece.CUBE)).
+        -> GamePiece.CONE)).
         andThen(new WaitCommand(0.5)).
         andThen(new SequentialCommandGroup(
         new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () ->
@@ -251,6 +261,17 @@ public class RobotContainer {
         new InstantCommand(() -> setGamePiece(GamePiece.CONE)),
         new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.DOUBLESUBSTATION, () ->
         GamePiece.CONE)));
+
+        // testing buttons
+        highCube.onTrue(new SequentialCommandGroup(
+            new InstantCommand(() -> setGamePiece(GamePiece.CUBE)),
+            new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.AUTOWRISTPOSITION, () ->
+            GamePiece.CUBE)).
+            andThen(new WaitCommand(.5)).
+            andThen(new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEHIGH, () -> 
+            GamePiece.CUBE)));
+
+            
 
 
 
