@@ -60,7 +60,6 @@ public class Swerve extends SubsystemBase {
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        System.out.println("rotation in drive = " + rotation);
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                 fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
@@ -148,7 +147,6 @@ public class Swerve extends SubsystemBase {
         // simulating gyro movement
         if(RobotBase.isSimulation()){
             var rotDt = Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates()).omegaRadiansPerSecond * Robot.kDefaultPeriod;
-            System.out.println("rot dt = " + rotDt);
             gyroYaw = gyroYaw.rotateBy(Rotation2d.fromRadians(rotDt));
         } else {
             gyroYaw = (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());

@@ -35,46 +35,35 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
 
     private Pose2d initialRobotPos = new Pose2d(); // note this is not the intial TRAJECTORY POSITION, but the position of the robot
 
-    public TrajectoryPlaceCubeExitCommunityAutoBalance(Swerve s_Swerve) {
-
-        // hard coding field position for simulation
-        DriverStation.Alliance color = RobotBase.isReal() ? DriverStation.getAlliance() : DriverStation.Alliance.Blue;
+    public TrajectoryPlaceCubeExitCommunityAutoBalance(DriverStation.Alliance alliance, Swerve s_Swerve) {
 
         // because depending on if ur blue or red, forwards on the field is backwards relative to your respective driverstation
-        Rotation2d forwardRelativeToDriver = color == DriverStation.Alliance.Blue ? Rotation2d.fromDegrees(0) : Rotation2d.fromDegrees(180);
-        Rotation2d backwardsRelativeToDriver = color == DriverStation.Alliance.Blue ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
+        Rotation2d forwardRelativeToDriver = alliance == DriverStation.Alliance.Blue ? Rotation2d.fromDegrees(0) : Rotation2d.fromDegrees(180);
+        Rotation2d backwardsRelativeToDriver = alliance == DriverStation.Alliance.Blue ? Rotation2d.fromDegrees(180) : Rotation2d.fromDegrees(0);
 
         // trajectory generation
         TrajectoryConfig config = new TrajectoryConfig(Constants.AutoConstants.kMaxSpeedMetersPerSecond, Constants.AutoConstants.kMaxAccelerationMetersPerSecondSquared).setKinematics(Constants.Swerve.swerveKinematics);
         // An example trajectory to follow.  All units in meters.
-        Trajectory startToAutobalance = TrajectoryGenerator.generateTrajectory(
-                // Pass through these two interior waypoints
-                List.of(new Pose2d(1.58, 2.77, forwardRelativeToDriver), new Pose2d(4.58, 2.77, forwardRelativeToDriver)),
-                config
-        );
+        Trajectory startToAutobalance;
+        Trajectory autoBalanceToOutsideCommunity;
+        Trajectory outsideCommunityToAutoBalance;
 
-        Trajectory autoBalanceToOutsideCommunity = TrajectoryGenerator.generateTrajectory(
-                // Pass through these two interior waypoints
-                List.of(new Pose2d(4.58, 2.77, forwardRelativeToDriver), new Pose2d(6.58, 2.77, forwardRelativeToDriver)),
-                config
-        );
+        if(alliance == DriverStation.Alliance.Blue){
+            startToAutobalance = TrajectoryGenerator.generateTrajectory(
+                    // Pass through these two interior waypoints
+                    List.of(new Pose2d(1.58, 2.77, forwardRelativeToDriver), new Pose2d(4.58, 2.77, forwardRelativeToDriver)),
+                    config
+            );
 
-<<<<<<< Updated upstream
-        Trajectory outsideCommunityToAutoBalance = TrajectoryGenerator.generateTrajectory(
-                // Pass through these two interior waypoints
-                List.of(new Pose2d(6.58, 2.77, backwardsRelativeToDriver), new Pose2d(4.58, 2.77, backwardsRelativeToDriver)),
-                config
-        );
-=======
             autoBalanceToOutsideCommunity = TrajectoryGenerator.generateTrajectory(
                     // Pass through these two interior waypoints
-                    List.of(new Pose2d(4.4, 2.77, forwardRelativeToDriver), new Pose2d(6.58, 2.77, forwardRelativeToDriver)),
+                    List.of(new Pose2d(4.58, 2.77, forwardRelativeToDriver), new Pose2d(6.58, 2.77, forwardRelativeToDriver)),
                     config
             );
 
             outsideCommunityToAutoBalance = TrajectoryGenerator.generateTrajectory(
                     // Pass through these two interior waypoints
-                    List.of(new Pose2d(6., 2.77, backwardsRelativeToDriver), new Pose2d(4.58, 2.77, backwardsRelativeToDriver)),
+                    List.of(new Pose2d(6.58, 2.77, backwardsRelativeToDriver), new Pose2d(4.58, 2.77, backwardsRelativeToDriver)),
                     config
             );
         } else {
@@ -87,17 +76,16 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
 
             autoBalanceToOutsideCommunity = TrajectoryGenerator.generateTrajectory(
                     // Pass through these two interior waypoints
-                    List.of(new Pose2d(fieldXLength - 4.58, 2.77, forwardRelativeToDriver), new Pose2d(fieldXLength - 5.75, 2.77, forwardRelativeToDriver)),
+                    List.of(new Pose2d(fieldXLength - 4.58, 2.77, forwardRelativeToDriver), new Pose2d(fieldXLength - 6.58, 2.77, forwardRelativeToDriver)),
                     config
             );
 
             outsideCommunityToAutoBalance = TrajectoryGenerator.generateTrajectory(
                     // Pass through these two interior waypoints
-                    List.of(new Pose2d(fieldXLength - 5.75, 2.77, backwardsRelativeToDriver), new Pose2d(fieldXLength - 5.00, 2.77, backwardsRelativeToDriver)),
+                    List.of(new Pose2d(fieldXLength - 6.58, 2.77, backwardsRelativeToDriver), new Pose2d(fieldXLength - 4.58, 2.77, backwardsRelativeToDriver)),
                     config
             );
         }
->>>>>>> Stashed changes
 
         var thetaController = new ProfiledPIDController(Constants.AutoConstants.kPThetaController, 0, 0, Constants.AutoConstants.kThetaControllerConstraints);
         thetaController.enableContinuousInput(-Math.PI, Math.PI);
@@ -114,21 +102,17 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
                 new WaitCommand(0.5),
                 new ResetDriveOdometry(initialRobotPos, s_Swerve),
                 // set positions out arm doesn't get stuck
-                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.AUTOWRISTPOSITION, () -> GamePiece.CONE),
+                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.OUTAKEAUTO, () -> GamePiece.CUBE),
                 new WaitCommand(0.25),
 
                 // set pos to score
                 new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.CUBEHIGH, () -> GamePiece.CUBE),
                 new IntakeOn(s_Intake, false),
-                new WaitCommand(0.25),
-
-                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.AUTOWRISTPOSITION, () -> GamePiece.CONE),
-                new intakeStop(s_Intake),
-               // new WaitCommand(0.25),
+                new WaitCommand(0.75),
 
                 // set position to stowed and stop the intake
-                //new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
-                
+                new SetAllPositions(s_Wrist, s_Elevator, s_Shoulder, Position.STOWED, () -> GamePiece.CUBE),
+                new intakeStop(s_Intake),
 
                 // autobalance
                 nodeToAutobalanceCommand,
