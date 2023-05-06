@@ -51,7 +51,7 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
         if(alliance == DriverStation.Alliance.Blue){
             startToAutobalance = TrajectoryGenerator.generateTrajectory(
                     // Pass through these two interior waypoints
-                    List.of(new Pose2d(1.58, 2.77, forwardRelativeToDriver), new Pose2d(4.58, 2.77, forwardRelativeToDriver)),
+                    List.of(new Pose2d(1.78, 2.77, forwardRelativeToDriver), new Pose2d(4.58, 2.77, forwardRelativeToDriver)),
                     config
             );
 
@@ -70,7 +70,7 @@ public class TrajectoryPlaceCubeExitCommunityAutoBalance extends SequentialComma
             double fieldXLength = 16; // abt 16 meters
             startToAutobalance = TrajectoryGenerator.generateTrajectory(
                     // Pass through these two interior waypoints
-                    List.of(new Pose2d(fieldXLength - 1.58, 2.77, forwardRelativeToDriver), new Pose2d(fieldXLength - 4.58, 2.77, forwardRelativeToDriver)),
+                    List.of(new Pose2d(fieldXLength - 1.78, 2.77, forwardRelativeToDriver), new Pose2d(fieldXLength - 4.58, 2.77, forwardRelativeToDriver)),
                     config
             );
 
